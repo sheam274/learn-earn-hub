@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "@/lib/auth-context";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AnimatedBackdrop } from "@/components/AnimatedBackdrop";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "sonner";
 
@@ -59,9 +60,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Learn & Earn — Engineering careers, accelerated" },
-      { name: "description", content: "Multi-engineering learning, assessments, CV builder, ATS parser, and a global+local job marketplace." },
-      { property: "og:site_name", content: "Learn & Earn" },
+      { title: "TalentBD — Learn, earn credentials, land jobs in Bangladesh" },
+      { name: "description", content: "TalentBD: Bangladesh's learn-and-earn platform with courses, certifications, CV builder, ATS parser, and a local + global jobs marketplace." },
+      { property: "og:site_name", content: "TalentBD" },
       { property: "og:type", content: "website" },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
@@ -103,6 +104,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <AuthSync />
+        <AnimatedBackdrop />
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">
