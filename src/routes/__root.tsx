@@ -15,7 +15,9 @@ import { AuthProvider } from "@/lib/auth-context";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { AnimatedBackdrop } from "@/components/AnimatedBackdrop";
+import { ChatAssistant } from "@/components/ChatAssistant";
 import { supabase } from "@/integrations/supabase/client";
+import logoUrl from "@/assets/talentbd-logo.png";
 import { Toaster } from "sonner";
 
 function NotFoundComponent() {
@@ -65,7 +67,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "TalentBD" },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: logoUrl },
+      { rel: "apple-touch-icon", href: logoUrl },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -113,6 +119,7 @@ function RootComponent() {
           <SiteFooter />
         </div>
         <Toaster richColors position="top-right" />
+        <ChatAssistant />
       </AuthProvider>
     </QueryClientProvider>
   );
