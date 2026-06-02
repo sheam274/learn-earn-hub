@@ -31,7 +31,7 @@ export const saveMyCv = createServerFn({ method: "POST" })
         {
           user_id: userId,
           selected_style: data.selected_style,
-          builder_payload: data.builder_payload,
+          builder_payload: data.builder_payload as any,
           updated_at: new Date().toISOString(),
         },
         { onConflict: "user_id" },
