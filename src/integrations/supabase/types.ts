@@ -14,16 +14,244 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cv_records: {
+        Row: {
+          builder_payload: Json
+          id: string
+          selected_style: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          builder_payload?: Json
+          id?: string
+          selected_style?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          builder_payload?: Json
+          id?: string
+          selected_style?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      job_marketplace: {
+        Row: {
+          company: string
+          created_at: string
+          description: string | null
+          discipline: string | null
+          id: string
+          is_live: boolean
+          is_remote: boolean
+          job_title: string
+          requirements: string[]
+          salary_range: string | null
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          description?: string | null
+          discipline?: string | null
+          id?: string
+          is_live?: boolean
+          is_remote?: boolean
+          job_title: string
+          requirements?: string[]
+          salary_range?: string | null
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          description?: string | null
+          discipline?: string | null
+          id?: string
+          is_live?: boolean
+          is_remote?: boolean
+          job_title?: string
+          requirements?: string[]
+          salary_range?: string | null
+        }
+        Relationships: []
+      }
+      learning_modules: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          discipline: string
+          documentation_body: string | null
+          id: string
+          section_slug: string
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          discipline: string
+          documentation_body?: string | null
+          id?: string
+          section_slug: string
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          discipline?: string
+          documentation_body?: string | null
+          id?: string
+          section_slug?: string
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          discipline: string | null
+          id: string
+          name: string | null
+          skills: string[]
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          discipline?: string | null
+          id: string
+          name?: string | null
+          skills?: string[]
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          discipline?: string | null
+          id?: string
+          name?: string | null
+          skills?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      skill_quizzes: {
+        Row: {
+          choices: string[]
+          correct_answer: string
+          created_at: string
+          id: string
+          module_id: string
+          question: string
+        }
+        Insert: {
+          choices: string[]
+          correct_answer: string
+          created_at?: string
+          id?: string
+          module_id: string
+          question: string
+        }
+        Update: {
+          choices?: string[]
+          correct_answer?: string
+          created_at?: string
+          id?: string
+          module_id?: string
+          question?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skill_quizzes_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "learning_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_credentials: {
+        Row: {
+          credential_name: string
+          id: string
+          module_id: string | null
+          score: number
+          user_id: string
+          verified_at: string
+        }
+        Insert: {
+          credential_name: string
+          id?: string
+          module_id?: string | null
+          score: number
+          user_id: string
+          verified_at?: string
+        }
+        Update: {
+          credential_name?: string
+          id?: string
+          module_id?: string | null
+          score?: number
+          user_id?: string
+          verified_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_credentials_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "learning_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "student"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +378,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "student"],
+    },
   },
 } as const
