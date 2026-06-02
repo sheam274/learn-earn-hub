@@ -7,14 +7,15 @@ import { supabase } from "@/integrations/supabase/client";
 const publicLinks = [
   { to: "/", label: "Home" },
   { to: "/jobs", label: "Jobs" },
+  { to: "/companies", label: "Companies" },
 ];
 const authedLinks = [
   { to: "/dashboard", label: "Dashboard" },
-  { to: "/learn", label: "Learn" },
-  { to: "/assessments", label: "Assessments" },
-  { to: "/cv-builder", label: "CV Builder" },
-  { to: "/cv-parser", label: "CV Parser" },
   { to: "/jobs", label: "Jobs" },
+  { to: "/companies", label: "Companies" },
+  { to: "/my-applications", label: "Applications" },
+  { to: "/learn", label: "Learn" },
+  { to: "/cv-builder", label: "CV" },
 ];
 
 export function SiteHeader() {
@@ -29,19 +30,19 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full" style={{ background: "var(--color-primary)", color: "var(--color-primary-foreground)" }}>
+    <header className="sticky top-0 z-40 w-full glass-header text-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         <Link to="/" className="flex items-center gap-2 font-bold tracking-tight">
           <span className="inline-block size-7 rounded-md" style={{ background: "var(--color-accent)" }} />
-          <span className="text-lg">Learn &amp; Earn</span>
+          <span className="text-lg">TalentBD</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {links.map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              className="rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100"
+              className="rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition"
               activeProps={{ style: { color: "var(--color-accent)", opacity: 1 } }}
               activeOptions={{ exact: l.to === "/" }}
             >
@@ -66,12 +67,12 @@ export function SiteHeader() {
           )}
         </nav>
 
-        <button className="md:hidden" onClick={() => setOpen((v) => !v)} aria-label="Menu">
+        <button className="lg:hidden" onClick={() => setOpen((v) => !v)} aria-label="Menu">
           {open ? <X /> : <Menu />}
         </button>
       </div>
       {open && (
-        <div className="md:hidden border-t border-white/10 px-4 pb-4">
+        <div className="lg:hidden border-t border-white/10 px-4 pb-4 glass-header">
           <div className="flex flex-col gap-1 pt-2">
             {links.map((l) => (
               <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-white/10">

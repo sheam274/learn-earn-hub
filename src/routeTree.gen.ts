@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as JobsRouteImport } from './routes/jobs'
+import { Route as CompaniesRouteImport } from './routes/companies'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedMyApplicationsRouteImport } from './routes/_authenticated/my-applications'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCvParserRouteImport } from './routes/_authenticated/cv-parser'
 import { Route as AuthenticatedCvBuilderRouteImport } from './routes/_authenticated/cv-builder'
@@ -23,11 +25,17 @@ import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminModulesRouteImport } from './routes/_authenticated/admin/modules'
 import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin/jobs'
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
+import { Route as AuthenticatedAdminCompaniesRouteImport } from './routes/_authenticated/admin/companies'
 import { Route as AuthenticatedLearnDisciplineTopicRouteImport } from './routes/_authenticated/learn/$discipline.$topic'
 
 const JobsRoute = JobsRouteImport.update({
   id: '/jobs',
   path: '/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompaniesRoute = CompaniesRouteImport.update({
+  id: '/companies',
+  path: '/companies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -44,6 +52,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMyApplicationsRoute =
+  AuthenticatedMyApplicationsRouteImport.update({
+    id: '/my-applications',
+    path: '/my-applications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -97,6 +111,12 @@ const AuthenticatedAdminDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminCompaniesRoute =
+  AuthenticatedAdminCompaniesRouteImport.update({
+    id: '/companies',
+    path: '/companies',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedLearnDisciplineTopicRoute =
   AuthenticatedLearnDisciplineTopicRouteImport.update({
     id: '/learn/$discipline/$topic',
@@ -107,12 +127,15 @@ const AuthenticatedLearnDisciplineTopicRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/companies': typeof CompaniesRoute
   '/jobs': typeof JobsRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/cv-builder': typeof AuthenticatedCvBuilderRoute
   '/cv-parser': typeof AuthenticatedCvParserRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/my-applications': typeof AuthenticatedMyApplicationsRoute
+  '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
   '/admin/modules': typeof AuthenticatedAdminModulesRoute
@@ -123,12 +146,15 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/companies': typeof CompaniesRoute
   '/jobs': typeof JobsRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/cv-builder': typeof AuthenticatedCvBuilderRoute
   '/cv-parser': typeof AuthenticatedCvParserRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/my-applications': typeof AuthenticatedMyApplicationsRoute
+  '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
   '/admin/modules': typeof AuthenticatedAdminModulesRoute
@@ -141,12 +167,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/companies': typeof CompaniesRoute
   '/jobs': typeof JobsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/assessments': typeof AuthenticatedAssessmentsRoute
   '/_authenticated/cv-builder': typeof AuthenticatedCvBuilderRoute
   '/_authenticated/cv-parser': typeof AuthenticatedCvParserRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/my-applications': typeof AuthenticatedMyApplicationsRoute
+  '/_authenticated/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRoute
   '/_authenticated/admin/modules': typeof AuthenticatedAdminModulesRoute
@@ -159,12 +188,15 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/companies'
     | '/jobs'
     | '/admin'
     | '/assessments'
     | '/cv-builder'
     | '/cv-parser'
     | '/dashboard'
+    | '/my-applications'
+    | '/admin/companies'
     | '/admin/dashboard'
     | '/admin/jobs'
     | '/admin/modules'
@@ -175,12 +207,15 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/companies'
     | '/jobs'
     | '/admin'
     | '/assessments'
     | '/cv-builder'
     | '/cv-parser'
     | '/dashboard'
+    | '/my-applications'
+    | '/admin/companies'
     | '/admin/dashboard'
     | '/admin/jobs'
     | '/admin/modules'
@@ -192,12 +227,15 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/companies'
     | '/jobs'
     | '/_authenticated/admin'
     | '/_authenticated/assessments'
     | '/_authenticated/cv-builder'
     | '/_authenticated/cv-parser'
     | '/_authenticated/dashboard'
+    | '/_authenticated/my-applications'
+    | '/_authenticated/admin/companies'
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/jobs'
     | '/_authenticated/admin/modules'
@@ -210,6 +248,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CompaniesRoute: typeof CompaniesRoute
   JobsRoute: typeof JobsRoute
 }
 
@@ -220,6 +259,13 @@ declare module '@tanstack/react-router' {
       path: '/jobs'
       fullPath: '/jobs'
       preLoaderRoute: typeof JobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/companies': {
+      id: '/companies'
+      path: '/companies'
+      fullPath: '/companies'
+      preLoaderRoute: typeof CompaniesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -242,6 +288,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/my-applications': {
+      id: '/_authenticated/my-applications'
+      path: '/my-applications'
+      fullPath: '/my-applications'
+      preLoaderRoute: typeof AuthenticatedMyApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
@@ -313,6 +366,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/companies': {
+      id: '/_authenticated/admin/companies'
+      path: '/companies'
+      fullPath: '/admin/companies'
+      preLoaderRoute: typeof AuthenticatedAdminCompaniesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/learn/$discipline/$topic': {
       id: '/_authenticated/learn/$discipline/$topic'
       path: '/learn/$discipline/$topic'
@@ -324,6 +384,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminCompaniesRoute: typeof AuthenticatedAdminCompaniesRoute
   AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
   AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRoute
   AuthenticatedAdminModulesRoute: typeof AuthenticatedAdminModulesRoute
@@ -332,6 +393,7 @@ interface AuthenticatedAdminRouteRouteChildren {
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminCompaniesRoute: AuthenticatedAdminCompaniesRoute,
     AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
     AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRoute,
     AuthenticatedAdminModulesRoute: AuthenticatedAdminModulesRoute,
@@ -349,6 +411,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCvBuilderRoute: typeof AuthenticatedCvBuilderRoute
   AuthenticatedCvParserRoute: typeof AuthenticatedCvParserRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedMyApplicationsRoute: typeof AuthenticatedMyApplicationsRoute
   AuthenticatedLearnIndexRoute: typeof AuthenticatedLearnIndexRoute
   AuthenticatedLearnDisciplineTopicRoute: typeof AuthenticatedLearnDisciplineTopicRoute
 }
@@ -359,6 +422,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCvBuilderRoute: AuthenticatedCvBuilderRoute,
   AuthenticatedCvParserRoute: AuthenticatedCvParserRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedMyApplicationsRoute: AuthenticatedMyApplicationsRoute,
   AuthenticatedLearnIndexRoute: AuthenticatedLearnIndexRoute,
   AuthenticatedLearnDisciplineTopicRoute:
     AuthenticatedLearnDisciplineTopicRoute,
@@ -371,6 +435,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  CompaniesRoute: CompaniesRoute,
   JobsRoute: JobsRoute,
 }
 export const routeTree = rootRouteImport

@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      companies: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          industry: string | null
+          location: string | null
+          logo_url: string | null
+          name: string
+          slug: string
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name: string
+          slug: string
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name?: string
+          slug?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       cv_records: {
         Row: {
           builder_payload: Json
@@ -38,44 +77,108 @@ export type Database = {
         }
         Relationships: []
       }
+      job_applications: {
+        Row: {
+          cover_note: string | null
+          created_at: string
+          id: string
+          job_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          cover_note?: string | null
+          created_at?: string
+          id?: string
+          job_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          cover_note?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_marketplace"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_marketplace: {
         Row: {
+          application_deadline: string | null
+          category: string | null
           company: string
+          company_id: string | null
           created_at: string
           description: string | null
           discipline: string | null
+          experience_level: string | null
           id: string
+          is_featured: boolean
           is_live: boolean
           is_remote: boolean
           job_title: string
+          job_type: string | null
+          location: string | null
           requirements: string[]
           salary_range: string | null
         }
         Insert: {
+          application_deadline?: string | null
+          category?: string | null
           company: string
+          company_id?: string | null
           created_at?: string
           description?: string | null
           discipline?: string | null
+          experience_level?: string | null
           id?: string
+          is_featured?: boolean
           is_live?: boolean
           is_remote?: boolean
           job_title: string
+          job_type?: string | null
+          location?: string | null
           requirements?: string[]
           salary_range?: string | null
         }
         Update: {
+          application_deadline?: string | null
+          category?: string | null
           company?: string
+          company_id?: string | null
           created_at?: string
           description?: string | null
           discipline?: string | null
+          experience_level?: string | null
           id?: string
+          is_featured?: boolean
           is_live?: boolean
           is_remote?: boolean
           job_title?: string
+          job_type?: string | null
+          location?: string | null
           requirements?: string[]
           salary_range?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "job_marketplace_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       learning_modules: {
         Row: {
