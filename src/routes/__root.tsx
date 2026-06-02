@@ -15,7 +15,9 @@ import { AuthProvider } from "@/lib/auth-context";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { AnimatedBackdrop } from "@/components/AnimatedBackdrop";
+import { ChatAssistant } from "@/components/ChatAssistant";
 import { supabase } from "@/integrations/supabase/client";
+import logoUrl from "@/assets/talentbd-logo.png";
 import { Toaster } from "sonner";
 
 function NotFoundComponent() {

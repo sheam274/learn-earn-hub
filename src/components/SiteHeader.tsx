@@ -3,6 +3,7 @@ import { Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
+import { BrandMark } from "@/components/Brand";
 
 const publicLinks = [
   { to: "/", label: "Home" },
@@ -32,9 +33,12 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 w-full glass-header text-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
-        <Link to="/" className="flex items-center gap-2 font-bold tracking-tight">
-          <span className="inline-block size-7 rounded-md" style={{ background: "var(--color-accent)" }} />
+        <Link to="/" className="flex items-center gap-2 font-bold tracking-tight group">
+          <span className="inline-flex size-9 items-center justify-center rounded-lg bg-white/10 p-1 ring-1 ring-white/20 transition group-hover:bg-white/20">
+            <BrandMark size={28} />
+          </span>
           <span className="text-lg">TalentBD</span>
+          <span className="hidden sm:inline ml-1 rounded-full bg-white/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/90">Premium</span>
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">
