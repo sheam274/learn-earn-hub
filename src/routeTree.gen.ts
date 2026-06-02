@@ -9,38 +9,233 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as JobsRouteImport } from './routes/jobs'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCvParserRouteImport } from './routes/_authenticated/cv-parser'
+import { Route as AuthenticatedCvBuilderRouteImport } from './routes/_authenticated/cv-builder'
+import { Route as AuthenticatedAssessmentsRouteImport } from './routes/_authenticated/assessments'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
+import { Route as AuthenticatedLearnIndexRouteImport } from './routes/_authenticated/learn/index'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
+import { Route as AuthenticatedAdminModulesRouteImport } from './routes/_authenticated/admin/modules'
+import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin/jobs'
+import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
+import { Route as AuthenticatedLearnDisciplineTopicRouteImport } from './routes/_authenticated/learn/$discipline.$topic'
 
+const JobsRoute = JobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCvParserRoute = AuthenticatedCvParserRouteImport.update({
+  id: '/cv-parser',
+  path: '/cv-parser',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCvBuilderRoute = AuthenticatedCvBuilderRouteImport.update({
+  id: '/cv-builder',
+  path: '/cv-builder',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAssessmentsRoute =
+  AuthenticatedAssessmentsRouteImport.update({
+    id: '/assessments',
+    path: '/assessments',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLearnIndexRoute = AuthenticatedLearnIndexRouteImport.update({
+  id: '/learn/',
+  path: '/learn/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminModulesRoute =
+  AuthenticatedAdminModulesRouteImport.update({
+    id: '/modules',
+    path: '/modules',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminJobsRoute = AuthenticatedAdminJobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminDashboardRoute =
+  AuthenticatedAdminDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedLearnDisciplineTopicRoute =
+  AuthenticatedLearnDisciplineTopicRouteImport.update({
+    id: '/learn/$discipline/$topic',
+    path: '/learn/$discipline/$topic',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/jobs': typeof JobsRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/assessments': typeof AuthenticatedAssessmentsRoute
+  '/cv-builder': typeof AuthenticatedCvBuilderRoute
+  '/cv-parser': typeof AuthenticatedCvParserRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/admin/jobs': typeof AuthenticatedAdminJobsRoute
+  '/admin/modules': typeof AuthenticatedAdminModulesRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/learn/': typeof AuthenticatedLearnIndexRoute
+  '/learn/$discipline/$topic': typeof AuthenticatedLearnDisciplineTopicRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/jobs': typeof JobsRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/assessments': typeof AuthenticatedAssessmentsRoute
+  '/cv-builder': typeof AuthenticatedCvBuilderRoute
+  '/cv-parser': typeof AuthenticatedCvParserRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/admin/jobs': typeof AuthenticatedAdminJobsRoute
+  '/admin/modules': typeof AuthenticatedAdminModulesRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/learn': typeof AuthenticatedLearnIndexRoute
+  '/learn/$discipline/$topic': typeof AuthenticatedLearnDisciplineTopicRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/jobs': typeof JobsRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/_authenticated/assessments': typeof AuthenticatedAssessmentsRoute
+  '/_authenticated/cv-builder': typeof AuthenticatedCvBuilderRoute
+  '/_authenticated/cv-parser': typeof AuthenticatedCvParserRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
+  '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRoute
+  '/_authenticated/admin/modules': typeof AuthenticatedAdminModulesRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/learn/': typeof AuthenticatedLearnIndexRoute
+  '/_authenticated/learn/$discipline/$topic': typeof AuthenticatedLearnDisciplineTopicRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/jobs'
+    | '/admin'
+    | '/assessments'
+    | '/cv-builder'
+    | '/cv-parser'
+    | '/dashboard'
+    | '/admin/dashboard'
+    | '/admin/jobs'
+    | '/admin/modules'
+    | '/admin/users'
+    | '/learn/'
+    | '/learn/$discipline/$topic'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/jobs'
+    | '/admin'
+    | '/assessments'
+    | '/cv-builder'
+    | '/cv-parser'
+    | '/dashboard'
+    | '/admin/dashboard'
+    | '/admin/jobs'
+    | '/admin/modules'
+    | '/admin/users'
+    | '/learn'
+    | '/learn/$discipline/$topic'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/jobs'
+    | '/_authenticated/admin'
+    | '/_authenticated/assessments'
+    | '/_authenticated/cv-builder'
+    | '/_authenticated/cv-parser'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/admin/dashboard'
+    | '/_authenticated/admin/jobs'
+    | '/_authenticated/admin/modules'
+    | '/_authenticated/admin/users'
+    | '/_authenticated/learn/'
+    | '/_authenticated/learn/$discipline/$topic'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  JobsRoute: typeof JobsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/jobs': {
+      id: '/jobs'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof JobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +243,135 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cv-parser': {
+      id: '/_authenticated/cv-parser'
+      path: '/cv-parser'
+      fullPath: '/cv-parser'
+      preLoaderRoute: typeof AuthenticatedCvParserRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cv-builder': {
+      id: '/_authenticated/cv-builder'
+      path: '/cv-builder'
+      fullPath: '/cv-builder'
+      preLoaderRoute: typeof AuthenticatedCvBuilderRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/assessments': {
+      id: '/_authenticated/assessments'
+      path: '/assessments'
+      fullPath: '/assessments'
+      preLoaderRoute: typeof AuthenticatedAssessmentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/learn/': {
+      id: '/_authenticated/learn/'
+      path: '/learn'
+      fullPath: '/learn/'
+      preLoaderRoute: typeof AuthenticatedLearnIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/modules': {
+      id: '/_authenticated/admin/modules'
+      path: '/modules'
+      fullPath: '/admin/modules'
+      preLoaderRoute: typeof AuthenticatedAdminModulesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/jobs': {
+      id: '/_authenticated/admin/jobs'
+      path: '/jobs'
+      fullPath: '/admin/jobs'
+      preLoaderRoute: typeof AuthenticatedAdminJobsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/dashboard': {
+      id: '/_authenticated/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/learn/$discipline/$topic': {
+      id: '/_authenticated/learn/$discipline/$topic'
+      path: '/learn/$discipline/$topic'
+      fullPath: '/learn/$discipline/$topic'
+      preLoaderRoute: typeof AuthenticatedLearnDisciplineTopicRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
+  AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRoute
+  AuthenticatedAdminModulesRoute: typeof AuthenticatedAdminModulesRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
+    AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRoute,
+    AuthenticatedAdminModulesRoute: AuthenticatedAdminModulesRoute,
+    AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
+  AuthenticatedAssessmentsRoute: typeof AuthenticatedAssessmentsRoute
+  AuthenticatedCvBuilderRoute: typeof AuthenticatedCvBuilderRoute
+  AuthenticatedCvParserRoute: typeof AuthenticatedCvParserRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedLearnIndexRoute: typeof AuthenticatedLearnIndexRoute
+  AuthenticatedLearnDisciplineTopicRoute: typeof AuthenticatedLearnDisciplineTopicRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
+  AuthenticatedAssessmentsRoute: AuthenticatedAssessmentsRoute,
+  AuthenticatedCvBuilderRoute: AuthenticatedCvBuilderRoute,
+  AuthenticatedCvParserRoute: AuthenticatedCvParserRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedLearnIndexRoute: AuthenticatedLearnIndexRoute,
+  AuthenticatedLearnDisciplineTopicRoute:
+    AuthenticatedLearnDisciplineTopicRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  JobsRoute: JobsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
