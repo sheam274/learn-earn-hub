@@ -1,59 +1,58 @@
-import { Link } from "@tanstack/react-router";
 import { BrandMark } from "@/components/Brand";
 import { Facebook, Linkedin, Twitter, Youtube, Globe } from "lucide-react";
 
-type Col = { title: string; links: { label: string; to: string }[] };
+type Col = { title: string; links: { label: string; href: string }[] };
 
 const columns: Col[] = [
   {
     title: "Jobs",
     links: [
-      { label: "All jobs", to: "/jobs" },
-      { label: "Remote jobs", to: "/jobs?remote=remote" },
-      { label: "IT / Software", to: "/jobs?category=IT%2FSoftware" },
-      { label: "Engineering", to: "/jobs?category=Engineering" },
-      { label: "Banking / Finance", to: "/jobs?category=Banking%2FFinance" },
-      { label: "Marketing", to: "/jobs?category=Marketing" },
-      { label: "Internships", to: "/jobs?type=Internship" },
-      { label: "Hot / Featured", to: "/jobs#featured" },
+      { label: "All jobs", href: "/jobs" },
+      { label: "Remote jobs", href: "/jobs?remote=remote" },
+      { label: "IT / Software", href: "/jobs?category=IT%2FSoftware" },
+      { label: "Engineering", href: "/jobs?category=Engineering" },
+      { label: "Banking / Finance", href: "/jobs?category=Banking%2FFinance" },
+      { label: "Marketing", href: "/jobs?category=Marketing" },
+      { label: "Internships", href: "/jobs?type=Internship" },
+      { label: "Hot / Featured", href: "/jobs#featured" },
     ],
   },
   {
     title: "Companies",
     links: [
-      { label: "Browse companies", to: "/companies" },
-      { label: "Top employers", to: "/companies" },
-      { label: "Salaries", to: "/salaries" },
-      { label: "Company reviews", to: "/companies" },
+      { label: "Browse companies", href: "/companies" },
+      { label: "Top employers", href: "/companies" },
+      { label: "Salaries", href: "/salaries" },
+      { label: "Company reviews", href: "/companies" },
     ],
   },
   {
     title: "Career",
     links: [
-      { label: "CV Builder", to: "/cv-builder" },
-      { label: "CV / ATS Parser", to: "/cv-parser" },
-      { label: "Career advice", to: "/career-advice" },
-      { label: "Interview prep", to: "/interview-prep" },
-      { label: "My applications", to: "/my-applications" },
+      { label: "CV Builder", href: "/cv-builder" },
+      { label: "CV / ATS Parser", href: "/cv-parser" },
+      { label: "Career advice", href: "/career-advice" },
+      { label: "Interview prep", href: "/interview-prep" },
+      { label: "My applications", href: "/my-applications" },
     ],
   },
   {
     title: "Learn",
     links: [
-      { label: "All tracks", to: "/learn" },
-      { label: "Certifications", to: "/assessments" },
-      { label: "Computer Science", to: "/learn" },
-      { label: "Electrical & Electronic", to: "/learn" },
-      { label: "Civil Engineering", to: "/learn" },
+      { label: "All tracks", href: "/learn" },
+      { label: "Certifications", href: "/assessments" },
+      { label: "Computer Science", href: "/learn" },
+      { label: "Electrical & Electronic", href: "/learn" },
+      { label: "Civil Engineering", href: "/learn" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About TalentBD", to: "/" },
-      { label: "For employers", to: "/auth" },
-      { label: "Help center", to: "/career-advice" },
-      { label: "Sign in", to: "/auth" },
+      { label: "About TalentBD", href: "/" },
+      { label: "For employers", href: "/auth" },
+      { label: "Help center", href: "/career-advice" },
+      { label: "Sign in", href: "/auth" },
     ],
   },
 ];
@@ -62,16 +61,15 @@ export function SiteFooter() {
   return (
     <footer className="mt-20 border-t border-white/10 bg-gradient-to-b from-transparent to-[oklch(0.18_0.04_265)] text-white/90">
       <div className="mx-auto max-w-7xl px-4 py-14 md:px-6">
-        {/* Brand row */}
         <div className="grid gap-8 md:grid-cols-[1.2fr_3fr]">
           <div>
-            <Link to="/" className="flex items-center gap-2 font-extrabold tracking-tight">
+            <a href="/" className="flex items-center gap-2 font-extrabold tracking-tight">
               <span className="inline-flex size-10 items-center justify-center rounded-lg bg-white/10 p-1.5 ring-1 ring-white/20">
                 <BrandMark size={28} />
               </span>
               <span className="text-xl">TalentBD</span>
               <span className="rounded-full bg-white/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider">Premium</span>
-            </Link>
+            </a>
             <p className="mt-3 max-w-sm text-sm text-white/70">
               Bangladesh's premium learn-and-earn platform. Build skills, earn verified credentials, and land local or global remote jobs.
             </p>
@@ -83,13 +81,7 @@ export function SiteFooter() {
                 { Icon: Youtube, href: "https://youtube.com" },
                 { Icon: Globe, href: "https://w3schools.com" },
               ].map(({ Icon, href }, i) => (
-                <a
-                  key={i}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex size-9 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15 transition hover:bg-white/20 hover:scale-110"
-                >
+                <a key={i} href={href} target="_blank" rel="noreferrer" className="inline-flex size-9 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15 transition hover:bg-white/20 hover:scale-110">
                   <Icon className="size-4" />
                 </a>
               ))}
@@ -103,9 +95,7 @@ export function SiteFooter() {
                 <ul className="mt-3 space-y-2 text-sm text-white/70">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <Link to={l.to} className="transition hover:text-white hover:underline">
-                        {l.label}
-                      </Link>
+                      <a href={l.href} className="transition hover:text-white hover:underline">{l.label}</a>
                     </li>
                   ))}
                 </ul>
@@ -114,7 +104,6 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Trust strip */}
         <div className="mt-12 grid gap-4 rounded-xl bg-white/5 p-5 ring-1 ring-white/10 md:grid-cols-4 text-center">
           {[
             ["10K+", "Active learners"],
