@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { applyToJob, listJobsPublic } from "@/lib/jobs.functions";
+import { listRemoteJobsExternal } from "@/lib/external-jobs.functions";
 import { useAuth } from "@/lib/auth-context";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { toast } from "sonner";
-import { Briefcase, MapPin, Clock, GraduationCap, Star } from "lucide-react";
+import { Briefcase, MapPin, Clock, GraduationCap, Star, Globe, ExternalLink, Radio } from "lucide-react";
 
 export const Route = createFileRoute("/jobs")({
   head: () => ({
@@ -28,10 +29,17 @@ const CATEGORIES = [
 
 function Jobs() {
   const fn = useServerFn(listJobsPublic);
+  const remoteFn = useServerFn(listRemoteJobsExternal);
   const applyFn = useServerFn(applyToJob);
   const qc = useQueryClient();
   const { user } = useAuth();
-  const q = useQuery({ queryKey: ["jobs"], queryFn: () => fn() });
+  const q = useQuery({ queryKey: ["jobs"], queryFn: () => fn(), staleTime: 60_000 });
+  const remoteQ = useQuery({
+    queryKey: ["remotive-jobs"],
+    queryFn: () => remoteFn({ data: { limit: 12 } }),
+    staleTime: 5 * 60_000,
+  });
+
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("");
@@ -42,11 +50,23 @@ function Jobs() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [cover, setCover] = useState("");
 
+  // Sync from URL params on mount so deep-links like /jobs?remote=remote work
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const p = new URLSearchParams(window.location.search);
+    const r = p.get("remote");
+    if (r === "remote" || r === "onsite" || r === "all") setRemote(r);
+    const c = p.get("category"); if (c) setCategory(c);
+    const t = p.get("type"); if (t) setType(t);
+    const s = p.get("search"); if (s) setSearch(s);
+  }, []);
+
   const apply = useMutation({
     mutationFn: (jobId: string) => applyFn({ data: { jobId, coverNote: cover } }),
     onSuccess: () => { toast.success("Application submitted"); setOpenId(null); setCover(""); qc.invalidateQueries({ queryKey: ["my-apps"] }); },
     onError: (e: any) => toast.error(e.message),
   });
+
 
   const all = q.data ?? [];
   const filtered = useMemo(() => all.filter((j: any) => {
@@ -123,6 +143,62 @@ function Jobs() {
           {filtered.length === 0 && <p className="text-sm text-muted-foreground">No jobs match those filters.</p>}
         </div>
       </section>
+
+      {/* Live Remote Jobs — pulled live from Remotive public API */}
+      <section className="mt-12">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <Globe className="size-5" style={{ color: "var(--color-primary)" }} />
+            Live remote jobs
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700">
+              <Radio className="size-3 animate-pulse" /> Live
+            </span>
+          </h2>
+          <span className="text-xs text-muted-foreground">Powered by Remotive · refreshed every 5 minutes</span>
+        </div>
+
+        {remoteQ.isLoading && <p className="mt-4 text-sm text-muted-foreground">Fetching live remote jobs…</p>}
+        {!remoteQ.isLoading && (remoteQ.data?.length ?? 0) === 0 && (
+          <p className="mt-4 text-sm text-muted-foreground">Live feed is taking a break — check back soon.</p>
+        )}
+
+        <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {(remoteQ.data ?? []).map((j: any, i: number) => (
+            <ScrollReveal key={j.id} delay={(i % 6) * 40}>
+              <a href={j.url ?? "#"} target="_blank" rel="noreferrer" className="lift glass rounded-xl p-5 h-full flex flex-col">
+                <div className="flex items-start gap-3">
+                  {j.company_logo ? (
+                    <img src={j.company_logo} alt={j.company} className="size-10 rounded-md object-contain bg-white" />
+                  ) : (
+                    <div className="size-10 rounded-md grid place-items-center bg-white/70 font-bold text-sm" style={{ color: "var(--color-primary)" }}>
+                      {j.company?.[0] ?? "?"}
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-semibold leading-tight line-clamp-2">{j.title}</h3>
+                    <p className="text-xs text-muted-foreground truncate">{j.company}</p>
+                  </div>
+                  <ExternalLink className="size-4 shrink-0 text-muted-foreground" />
+                </div>
+                <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                  {j.category && <span>{j.category}</span>}
+                  {j.job_type && <span>· {j.job_type}</span>}
+                  <span>· 🌍 {j.location}</span>
+                </div>
+                {j.tags?.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1">
+                    {j.tags.slice(0, 4).map((t: string) => (
+                      <span key={t} className="rounded border bg-white/60 px-2 py-0.5 text-[11px]">{t}</span>
+                    ))}
+                  </div>
+                )}
+                {j.salary && <p className="mt-3 text-sm font-medium" style={{ color: "var(--color-primary)" }}>{j.salary}</p>}
+              </a>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
+
 
       {openId && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4" onClick={() => setOpenId(null)}>
