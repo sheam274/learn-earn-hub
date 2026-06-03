@@ -72,26 +72,25 @@ export function SiteHeader() {
           <Link to="/" className="rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition" activeProps={{ style: { color: "var(--color-accent)", opacity: 1 } }} activeOptions={{ exact: true }}>Home</Link>
           {baseNav.map((item) => (
             <div key={item.label} className="relative" onMouseEnter={() => setHover(item.label)} onMouseLeave={() => setHover(null)}>
-              <Link
-                to={item.to}
+              <a
+                href={item.to}
                 className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition"
-                activeProps={{ style: { color: "var(--color-accent)", opacity: 1 } }}
               >
                 {item.label}
                 {item.children && <ChevronDown className="size-3.5 opacity-70" />}
-              </Link>
+              </a>
               {item.children && hover === item.label && (
                 <div className="absolute left-0 top-full pt-2 z-50">
                   <div className="glass min-w-[260px] rounded-xl border border-white/10 p-2 shadow-2xl text-foreground">
                     {item.children.map((c) => (
-                      <Link
+                      <a
                         key={c.to + c.label}
-                        to={c.to}
+                        href={c.to}
                         className="block rounded-lg px-3 py-2 text-sm hover:bg-white/60"
                       >
                         <div className="font-semibold">{c.label}</div>
                         {c.desc && <div className="text-xs text-muted-foreground">{c.desc}</div>}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -125,9 +124,9 @@ export function SiteHeader() {
               <div key={item.label} className="border-t border-white/10 pt-2 mt-1">
                 <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white/60">{item.label}</div>
                 {(item.children ?? [{ to: item.to, label: item.label }]).map((c) => (
-                  <Link key={c.to + c.label} to={c.to} onClick={() => setOpen(false)} className="block rounded-md px-3 py-2 text-sm hover:bg-white/10">
+                  <a key={c.to + c.label} href={c.to} onClick={() => setOpen(false)} className="block rounded-md px-3 py-2 text-sm hover:bg-white/10">
                     {c.label}
-                  </Link>
+                  </a>
                 ))}
               </div>
             ))}
