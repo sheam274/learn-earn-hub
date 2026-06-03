@@ -29,10 +29,17 @@ const CATEGORIES = [
 
 function Jobs() {
   const fn = useServerFn(listJobsPublic);
+  const remoteFn = useServerFn(listRemoteJobsExternal);
   const applyFn = useServerFn(applyToJob);
   const qc = useQueryClient();
   const { user } = useAuth();
-  const q = useQuery({ queryKey: ["jobs"], queryFn: () => fn() });
+  const q = useQuery({ queryKey: ["jobs"], queryFn: () => fn(), staleTime: 60_000 });
+  const remoteQ = useQuery({
+    queryKey: ["remotive-jobs"],
+    queryFn: () => remoteFn({ data: { limit: 12 } }),
+    staleTime: 5 * 60_000,
+  });
+
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("");
@@ -43,11 +50,23 @@ function Jobs() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [cover, setCover] = useState("");
 
+  // Sync from URL params on mount so deep-links like /jobs?remote=remote work
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const p = new URLSearchParams(window.location.search);
+    const r = p.get("remote");
+    if (r === "remote" || r === "onsite" || r === "all") setRemote(r);
+    const c = p.get("category"); if (c) setCategory(c);
+    const t = p.get("type"); if (t) setType(t);
+    const s = p.get("search"); if (s) setSearch(s);
+  }, []);
+
   const apply = useMutation({
     mutationFn: (jobId: string) => applyFn({ data: { jobId, coverNote: cover } }),
     onSuccess: () => { toast.success("Application submitted"); setOpenId(null); setCover(""); qc.invalidateQueries({ queryKey: ["my-apps"] }); },
     onError: (e: any) => toast.error(e.message),
   });
+
 
   const all = q.data ?? [];
   const filtered = useMemo(() => all.filter((j: any) => {
