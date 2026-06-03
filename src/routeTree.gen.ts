@@ -9,8 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SalariesRouteImport } from './routes/salaries'
 import { Route as JobsRouteImport } from './routes/jobs'
+import { Route as InterviewPrepRouteImport } from './routes/interview-prep'
 import { Route as CompaniesRouteImport } from './routes/companies'
+import { Route as CareerAdviceRouteImport } from './routes/career-advice'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -28,14 +31,29 @@ import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminCompaniesRouteImport } from './routes/_authenticated/admin/companies'
 import { Route as AuthenticatedLearnDisciplineTopicRouteImport } from './routes/_authenticated/learn/$discipline.$topic'
 
+const SalariesRoute = SalariesRouteImport.update({
+  id: '/salaries',
+  path: '/salaries',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JobsRoute = JobsRouteImport.update({
   id: '/jobs',
   path: '/jobs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InterviewPrepRoute = InterviewPrepRouteImport.update({
+  id: '/interview-prep',
+  path: '/interview-prep',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CompaniesRoute = CompaniesRouteImport.update({
   id: '/companies',
   path: '/companies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareerAdviceRoute = CareerAdviceRouteImport.update({
+  id: '/career-advice',
+  path: '/career-advice',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -127,8 +145,11 @@ const AuthenticatedLearnDisciplineTopicRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/career-advice': typeof CareerAdviceRoute
   '/companies': typeof CompaniesRoute
+  '/interview-prep': typeof InterviewPrepRoute
   '/jobs': typeof JobsRoute
+  '/salaries': typeof SalariesRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/cv-builder': typeof AuthenticatedCvBuilderRoute
@@ -146,8 +167,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/career-advice': typeof CareerAdviceRoute
   '/companies': typeof CompaniesRoute
+  '/interview-prep': typeof InterviewPrepRoute
   '/jobs': typeof JobsRoute
+  '/salaries': typeof SalariesRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/assessments': typeof AuthenticatedAssessmentsRoute
   '/cv-builder': typeof AuthenticatedCvBuilderRoute
@@ -167,8 +191,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/career-advice': typeof CareerAdviceRoute
   '/companies': typeof CompaniesRoute
+  '/interview-prep': typeof InterviewPrepRoute
   '/jobs': typeof JobsRoute
+  '/salaries': typeof SalariesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/assessments': typeof AuthenticatedAssessmentsRoute
   '/_authenticated/cv-builder': typeof AuthenticatedCvBuilderRoute
@@ -188,8 +215,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/career-advice'
     | '/companies'
+    | '/interview-prep'
     | '/jobs'
+    | '/salaries'
     | '/admin'
     | '/assessments'
     | '/cv-builder'
@@ -207,8 +237,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/career-advice'
     | '/companies'
+    | '/interview-prep'
     | '/jobs'
+    | '/salaries'
     | '/admin'
     | '/assessments'
     | '/cv-builder'
@@ -227,8 +260,11 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/career-advice'
     | '/companies'
+    | '/interview-prep'
     | '/jobs'
+    | '/salaries'
     | '/_authenticated/admin'
     | '/_authenticated/assessments'
     | '/_authenticated/cv-builder'
@@ -248,12 +284,22 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CareerAdviceRoute: typeof CareerAdviceRoute
   CompaniesRoute: typeof CompaniesRoute
+  InterviewPrepRoute: typeof InterviewPrepRoute
   JobsRoute: typeof JobsRoute
+  SalariesRoute: typeof SalariesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/salaries': {
+      id: '/salaries'
+      path: '/salaries'
+      fullPath: '/salaries'
+      preLoaderRoute: typeof SalariesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/jobs': {
       id: '/jobs'
       path: '/jobs'
@@ -261,11 +307,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JobsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/interview-prep': {
+      id: '/interview-prep'
+      path: '/interview-prep'
+      fullPath: '/interview-prep'
+      preLoaderRoute: typeof InterviewPrepRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/companies': {
       id: '/companies'
       path: '/companies'
       fullPath: '/companies'
       preLoaderRoute: typeof CompaniesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/career-advice': {
+      id: '/career-advice'
+      path: '/career-advice'
+      fullPath: '/career-advice'
+      preLoaderRoute: typeof CareerAdviceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -435,8 +495,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  CareerAdviceRoute: CareerAdviceRoute,
   CompaniesRoute: CompaniesRoute,
+  InterviewPrepRoute: InterviewPrepRoute,
   JobsRoute: JobsRoute,
+  SalariesRoute: SalariesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
