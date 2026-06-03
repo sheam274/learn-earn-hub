@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { applyToJob, listJobsPublic } from "@/lib/jobs.functions";
+import { listRemoteJobsExternal } from "@/lib/external-jobs.functions";
 import { useAuth } from "@/lib/auth-context";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { toast } from "sonner";
-import { Briefcase, MapPin, Clock, GraduationCap, Star } from "lucide-react";
+import { Briefcase, MapPin, Clock, GraduationCap, Star, Globe, ExternalLink, Radio } from "lucide-react";
 
 export const Route = createFileRoute("/jobs")({
   head: () => ({

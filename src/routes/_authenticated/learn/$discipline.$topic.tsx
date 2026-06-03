@@ -44,20 +44,49 @@ function Topic() {
       <p className="mt-1 text-muted-foreground">{m.description}</p>
 
       {m.video_url && (
-        <div className="mt-6 aspect-video w-full overflow-hidden rounded-xl border bg-black">
-          <iframe src={m.video_url} title={m.title} className="h-full w-full" allowFullScreen />
+        <div className="mt-6 aspect-video w-full overflow-hidden rounded-xl border bg-black shadow-2xl">
+          <iframe
+            src={m.video_url}
+            title={m.title}
+            className="h-full w-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
         </div>
       )}
 
       <div className="mt-6 rounded-xl border bg-white">
         <button onClick={() => setDocOpen((v) => !v)} className="flex w-full items-center justify-between p-4 text-left font-semibold">
-          <span>Documentation</span>
+          <span>📖 Documentation</span>
           <span className="text-sm text-muted-foreground">{docOpen ? "Hide" : "Show"}</span>
         </button>
         {docOpen && (
-          <pre className="whitespace-pre-wrap border-t p-4 text-sm">{m.documentation_body}</pre>
+          <pre className="whitespace-pre-wrap border-t p-4 text-sm leading-relaxed">{m.documentation_body}</pre>
         )}
       </div>
+
+      {Array.isArray(m.resources) && m.resources.length > 0 && (
+        <div className="mt-6 rounded-xl border bg-white p-5">
+          <h2 className="font-semibold flex items-center gap-2">📚 Recommended resources <span className="text-xs font-normal text-muted-foreground">(W3Schools, MDN, official docs)</span></h2>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            {m.resources.map((r: any, i: number) => (
+              <li key={i}>
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="lift flex items-center gap-3 rounded-lg border bg-white/70 p-3 text-sm hover:bg-white"
+                >
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-md text-white text-xs font-bold" style={{ background: r.type === "pdf" ? "oklch(0.55 0.2 25)" : "var(--color-primary)" }}>
+                    {r.type === "pdf" ? "PDF" : "DOC"}
+                  </span>
+                  <span className="font-medium">{r.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {quizzes.length > 0 && (
         <div className="mt-8 rounded-xl border bg-white p-6">
