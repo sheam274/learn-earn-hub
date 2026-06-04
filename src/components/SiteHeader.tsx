@@ -10,6 +10,18 @@ import { useQuery } from "@tanstack/react-query";
 
 type NavItem = { to: string; label: string; children?: { to: string; label: string; desc?: string }[] };
 
+const adminNav: NavItem = {
+  to: "/admin/dashboard",
+  label: "Admin",
+  children: [
+    { to: "/admin/dashboard", label: "Dashboard", desc: "Overview & stats" },
+    { to: "/admin/users", label: "Users", desc: "Manage user accounts" },
+    { to: "/admin/jobs", label: "Jobs", desc: "Post & manage jobs" },
+    { to: "/admin/companies", label: "Companies", desc: "Company profiles" },
+    { to: "/admin/modules", label: "Modules", desc: "Learning modules" },
+  ],
+};
+
 const baseNav: NavItem[] = [
   {
     to: "/jobs",
@@ -112,9 +124,23 @@ export function SiteHeader() {
             <Link to="/dashboard" className="rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition" activeProps={{ style: { color: "var(--color-accent)", opacity: 1 } }}>Dashboard</Link>
           )}
           {user && isAdmin && (
-            <Link to="/admin/dashboard" className="rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition flex items-center gap-1" activeProps={{ style: { color: "var(--color-accent)", opacity: 1 } }}>
-              <ShieldCheck className="size-3.5" /> Admin
-            </Link>
+            <div className="relative" onMouseEnter={() => setHover("Admin")} onMouseLeave={() => setHover(null)}>
+              <a href="/admin/dashboard" className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition">
+                <ShieldCheck className="size-3.5" /> Admin <ChevronDown className="size-3.5 opacity-70" />
+              </a>
+              {hover === "Admin" && (
+                <div className="absolute left-0 top-full pt-2 z-50">
+                  <div className="glass min-w-[260px] rounded-xl border border-white/10 p-2 shadow-2xl text-foreground">
+                    {adminNav.children?.map((c) => (
+                      <a key={c.to + c.label} href={c.to} className="block rounded-lg px-3 py-2 text-sm hover:bg-white/60">
+                        <div className="font-semibold">{c.label}</div>
+                        {c.desc && <div className="text-xs text-muted-foreground">{c.desc}</div>}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           )}
           {user ? (
             <button onClick={signOut} className="ml-2 inline-flex items-center gap-1 rounded-md border border-white/30 px-3 py-1.5 text-sm hover:bg-white/10">
@@ -150,9 +176,14 @@ export function SiteHeader() {
               <>
                 <Link to="/dashboard" onClick={() => setOpen(false)} className="mt-2 rounded-md px-3 py-2 text-sm hover:bg-white/10">Dashboard</Link>
                 {isAdmin && (
-                  <Link to="/admin/dashboard" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-white/10 flex items-center gap-1">
-                    <ShieldCheck className="size-3.5" /> Admin
-                  </Link>
+                  <div className="border-t border-white/10 pt-2 mt-1">
+                    <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white/60 flex items-center gap-1"><ShieldCheck className="size-3" /> Admin</div>
+                    {adminNav.children?.map((c) => (
+                      <a key={c.to + c.label} href={c.to} onClick={() => setOpen(false)} className="block rounded-md px-3 py-2 text-sm hover:bg-white/10">
+                        {c.label}
+                      </a>
+                    ))}
+                  </div>
                 )}
                 <Link to="/my-applications" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-white/10">My applications</Link>
                 <button onClick={signOut} className="mt-2 rounded-md border border-white/30 px-3 py-2 text-left text-sm">Sign out</button>
