@@ -10,6 +10,18 @@ import { useQuery } from "@tanstack/react-query";
 
 type NavItem = { to: string; label: string; children?: { to: string; label: string; desc?: string }[] };
 
+const adminNav: NavItem = {
+  to: "/admin/dashboard",
+  label: "Admin",
+  children: [
+    { to: "/admin/dashboard", label: "Dashboard", desc: "Overview & stats" },
+    { to: "/admin/users", label: "Users", desc: "Manage user accounts" },
+    { to: "/admin/jobs", label: "Jobs", desc: "Post & manage jobs" },
+    { to: "/admin/companies", label: "Companies", desc: "Company profiles" },
+    { to: "/admin/modules", label: "Modules", desc: "Learning modules" },
+  ],
+};
+
 const baseNav: NavItem[] = [
   {
     to: "/jobs",
