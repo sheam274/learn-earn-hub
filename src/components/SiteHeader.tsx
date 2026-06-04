@@ -176,9 +176,14 @@ export function SiteHeader() {
               <>
                 <Link to="/dashboard" onClick={() => setOpen(false)} className="mt-2 rounded-md px-3 py-2 text-sm hover:bg-white/10">Dashboard</Link>
                 {isAdmin && (
-                  <Link to="/admin/dashboard" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-white/10 flex items-center gap-1">
-                    <ShieldCheck className="size-3.5" /> Admin
-                  </Link>
+                  <div className="border-t border-white/10 pt-2 mt-1">
+                    <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white/60 flex items-center gap-1"><ShieldCheck className="size-3" /> Admin</div>
+                    {adminNav.children?.map((c) => (
+                      <a key={c.to + c.label} href={c.to} onClick={() => setOpen(false)} className="block rounded-md px-3 py-2 text-sm hover:bg-white/10">
+                        {c.label}
+                      </a>
+                    ))}
+                  </div>
                 )}
                 <Link to="/my-applications" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-white/10">My applications</Link>
                 <button onClick={signOut} className="mt-2 rounded-md border border-white/30 px-3 py-2 text-left text-sm">Sign out</button>
