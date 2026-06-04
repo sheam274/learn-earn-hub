@@ -149,6 +149,11 @@ export function SiteHeader() {
             {user ? (
               <>
                 <Link to="/dashboard" onClick={() => setOpen(false)} className="mt-2 rounded-md px-3 py-2 text-sm hover:bg-white/10">Dashboard</Link>
+                {isAdmin && (
+                  <Link to="/admin/dashboard" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-white/10 flex items-center gap-1">
+                    <ShieldCheck className="size-3.5" /> Admin
+                  </Link>
+                )}
                 <Link to="/my-applications" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-white/10">My applications</Link>
                 <button onClick={signOut} className="mt-2 rounded-md border border-white/30 px-3 py-2 text-left text-sm">Sign out</button>
               </>
