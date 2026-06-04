@@ -1,9 +1,12 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, X, LogOut, ChevronDown } from "lucide-react";
+import { Menu, X, LogOut, ChevronDown, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { BrandMark } from "@/components/Brand";
+import { useServerFn } from "@tanstack/react-start";
+import { getMyProfile } from "@/lib/profile.functions";
+import { useQuery } from "@tanstack/react-query";
 
 type NavItem = { to: string; label: string; children?: { to: string; label: string; desc?: string }[] };
 
