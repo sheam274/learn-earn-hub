@@ -111,6 +111,11 @@ export function SiteHeader() {
           {user && (
             <Link to="/dashboard" className="rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition" activeProps={{ style: { color: "var(--color-accent)", opacity: 1 } }}>Dashboard</Link>
           )}
+          {user && isAdmin && (
+            <Link to="/admin/dashboard" className="rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition flex items-center gap-1" activeProps={{ style: { color: "var(--color-accent)", opacity: 1 } }}>
+              <ShieldCheck className="size-3.5" /> Admin
+            </Link>
+          )}
           {user ? (
             <button onClick={signOut} className="ml-2 inline-flex items-center gap-1 rounded-md border border-white/30 px-3 py-1.5 text-sm hover:bg-white/10">
               <LogOut className="size-4" /> Sign out
