@@ -55,6 +55,14 @@ export function SiteHeader() {
   const [hover, setHover] = useState<string | null>(null);
   const nav = useNavigate();
 
+  const fetchProfile = useServerFn(getMyProfile);
+  const { data: profileData } = useQuery({
+    queryKey: ["myProfile"],
+    queryFn: () => fetchProfile({}),
+    enabled: !!user,
+  });
+  const isAdmin = profileData?.isAdmin ?? false;
+
   async function signOut() {
     await supabase.auth.signOut();
     nav({ to: "/" });
