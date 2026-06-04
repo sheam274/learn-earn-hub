@@ -1,9 +1,12 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, X, LogOut, ChevronDown } from "lucide-react";
+import { Menu, X, LogOut, ChevronDown, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { BrandMark } from "@/components/Brand";
+import { useServerFn } from "@tanstack/react-start";
+import { getMyProfile } from "@/lib/profile.functions";
+import { useQuery } from "@tanstack/react-query";
 
 type NavItem = { to: string; label: string; children?: { to: string; label: string; desc?: string }[] };
 
@@ -51,6 +54,14 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState<string | null>(null);
   const nav = useNavigate();
+
+  const fetchProfile = useServerFn(getMyProfile);
+  const { data: profileData } = useQuery({
+    queryKey: ["myProfile"],
+    queryFn: () => fetchProfile({}),
+    enabled: !!user,
+  });
+  const isAdmin = profileData?.isAdmin ?? false;
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -100,6 +111,11 @@ export function SiteHeader() {
           {user && (
             <Link to="/dashboard" className="rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition" activeProps={{ style: { color: "var(--color-accent)", opacity: 1 } }}>Dashboard</Link>
           )}
+          {user && isAdmin && (
+            <Link to="/admin/dashboard" className="rounded-md px-3 py-1.5 text-sm font-medium opacity-90 hover:opacity-100 hover:bg-white/10 transition flex items-center gap-1" activeProps={{ style: { color: "var(--color-accent)", opacity: 1 } }}>
+              <ShieldCheck className="size-3.5" /> Admin
+            </Link>
+          )}
           {user ? (
             <button onClick={signOut} className="ml-2 inline-flex items-center gap-1 rounded-md border border-white/30 px-3 py-1.5 text-sm hover:bg-white/10">
               <LogOut className="size-4" /> Sign out
@@ -133,6 +149,11 @@ export function SiteHeader() {
             {user ? (
               <>
                 <Link to="/dashboard" onClick={() => setOpen(false)} className="mt-2 rounded-md px-3 py-2 text-sm hover:bg-white/10">Dashboard</Link>
+                {isAdmin && (
+                  <Link to="/admin/dashboard" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-white/10 flex items-center gap-1">
+                    <ShieldCheck className="size-3.5" /> Admin
+                  </Link>
+                )}
                 <Link to="/my-applications" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm hover:bg-white/10">My applications</Link>
                 <button onClick={signOut} className="mt-2 rounded-md border border-white/30 px-3 py-2 text-left text-sm">Sign out</button>
               </>
