@@ -17,6 +17,7 @@ import { Route as CareerAdviceRouteImport } from './routes/career-advice'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as JobsJobIdRouteImport } from './routes/jobs.$jobId'
 import { Route as AuthenticatedMyApplicationsRouteImport } from './routes/_authenticated/my-applications'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCvParserRouteImport } from './routes/_authenticated/cv-parser'
@@ -69,6 +70,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const JobsJobIdRoute = JobsJobIdRouteImport.update({
+  id: '/$jobId',
+  path: '/$jobId',
+  getParentRoute: () => JobsRoute,
 } as any)
 const AuthenticatedMyApplicationsRoute =
   AuthenticatedMyApplicationsRouteImport.update({
@@ -148,7 +154,7 @@ export interface FileRoutesByFullPath {
   '/career-advice': typeof CareerAdviceRoute
   '/companies': typeof CompaniesRoute
   '/interview-prep': typeof InterviewPrepRoute
-  '/jobs': typeof JobsRoute
+  '/jobs': typeof JobsRouteWithChildren
   '/salaries': typeof SalariesRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/assessments': typeof AuthenticatedAssessmentsRoute
@@ -156,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/cv-parser': typeof AuthenticatedCvParserRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
+  '/jobs/$jobId': typeof JobsJobIdRoute
   '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
@@ -170,7 +177,7 @@ export interface FileRoutesByTo {
   '/career-advice': typeof CareerAdviceRoute
   '/companies': typeof CompaniesRoute
   '/interview-prep': typeof InterviewPrepRoute
-  '/jobs': typeof JobsRoute
+  '/jobs': typeof JobsRouteWithChildren
   '/salaries': typeof SalariesRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/assessments': typeof AuthenticatedAssessmentsRoute
@@ -178,6 +185,7 @@ export interface FileRoutesByTo {
   '/cv-parser': typeof AuthenticatedCvParserRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
+  '/jobs/$jobId': typeof JobsJobIdRoute
   '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
@@ -194,7 +202,7 @@ export interface FileRoutesById {
   '/career-advice': typeof CareerAdviceRoute
   '/companies': typeof CompaniesRoute
   '/interview-prep': typeof InterviewPrepRoute
-  '/jobs': typeof JobsRoute
+  '/jobs': typeof JobsRouteWithChildren
   '/salaries': typeof SalariesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/assessments': typeof AuthenticatedAssessmentsRoute
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/_authenticated/cv-parser': typeof AuthenticatedCvParserRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/my-applications': typeof AuthenticatedMyApplicationsRoute
+  '/jobs/$jobId': typeof JobsJobIdRoute
   '/_authenticated/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRoute
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
     | '/cv-parser'
     | '/dashboard'
     | '/my-applications'
+    | '/jobs/$jobId'
     | '/admin/companies'
     | '/admin/dashboard'
     | '/admin/jobs'
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
     | '/cv-parser'
     | '/dashboard'
     | '/my-applications'
+    | '/jobs/$jobId'
     | '/admin/companies'
     | '/admin/dashboard'
     | '/admin/jobs'
@@ -271,6 +282,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cv-parser'
     | '/_authenticated/dashboard'
     | '/_authenticated/my-applications'
+    | '/jobs/$jobId'
     | '/_authenticated/admin/companies'
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/jobs'
@@ -287,7 +299,7 @@ export interface RootRouteChildren {
   CareerAdviceRoute: typeof CareerAdviceRoute
   CompaniesRoute: typeof CompaniesRoute
   InterviewPrepRoute: typeof InterviewPrepRoute
-  JobsRoute: typeof JobsRoute
+  JobsRoute: typeof JobsRouteWithChildren
   SalariesRoute: typeof SalariesRoute
 }
 
@@ -348,6 +360,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/jobs/$jobId': {
+      id: '/jobs/$jobId'
+      path: '/$jobId'
+      fullPath: '/jobs/$jobId'
+      preLoaderRoute: typeof JobsJobIdRouteImport
+      parentRoute: typeof JobsRoute
     }
     '/_authenticated/my-applications': {
       id: '/_authenticated/my-applications'
@@ -491,6 +510,16 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface JobsRouteChildren {
+  JobsJobIdRoute: typeof JobsJobIdRoute
+}
+
+const JobsRouteChildren: JobsRouteChildren = {
+  JobsJobIdRoute: JobsJobIdRoute,
+}
+
+const JobsRouteWithChildren = JobsRoute._addFileChildren(JobsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -498,9 +527,19 @@ const rootRouteChildren: RootRouteChildren = {
   CareerAdviceRoute: CareerAdviceRoute,
   CompaniesRoute: CompaniesRoute,
   InterviewPrepRoute: InterviewPrepRoute,
-  JobsRoute: JobsRoute,
+  JobsRoute: JobsRouteWithChildren,
   SalariesRoute: SalariesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
