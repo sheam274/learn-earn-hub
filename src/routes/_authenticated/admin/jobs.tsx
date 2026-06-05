@@ -55,10 +55,12 @@ function AdminJobs() {
                   <p className="text-xs text-muted-foreground">{j.company} · {j.is_remote ? "Remote" : "On-site"}</p>
                 </div>
                 <div className="flex gap-2">
+                  <button onClick={() => setF({ id: j.id, job_title: j.job_title ?? "", company: j.company ?? "", description: j.description ?? "", salary_range: j.salary_range ?? "", discipline: j.discipline ?? "cse", is_remote: !!j.is_remote, is_live: !!j.is_live, requirements: (j.requirements ?? []).join(", ") })} className="rounded-md border px-2 py-1 text-xs">Edit</button>
                   <button onClick={() => toggle.mutate(j)} className="rounded-md border px-2 py-1 text-xs">{j.is_live ? "Unpublish" : "Publish"}</button>
                   <button onClick={() => del.mutate(j.id)} className="rounded-md px-2 py-1 text-xs text-white" style={{ background: "var(--color-destructive)" }}>Del</button>
                 </div>
               </li>
+
             ))}
           </ul>
         </div>
