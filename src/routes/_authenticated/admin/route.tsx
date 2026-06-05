@@ -1,19 +1,18 @@
-import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyProfile } from "@/lib/profile.functions";
+import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  beforeLoad: async () => {
-    // Component-level admin check; non-admins get redirected on render.
-    return {};
-  },
   component: AdminLayout,
 });
 
 function AdminLayout() {
+  const { user } = useAuth();
   const fn = useServerFn(getMyProfile);
-  const q = useQuery({ queryKey: ["me"], queryFn: () => fn() });
+  const q = useQuery({ queryKey: ["me"], queryFn: () => fn(), enabled: !!user });
+
 
   if (q.isLoading) return <div className="p-10 text-center text-muted-foreground">Loading…</div>;
   if (!q.data?.isAdmin) {
