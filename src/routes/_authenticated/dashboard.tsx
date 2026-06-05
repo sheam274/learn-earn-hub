@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyProfile } from "@/lib/profile.functions";
 import { listMyCredentials } from "@/lib/assessments.functions";
-import { listJobsPublic } from "@/lib/jobs.functions";
+import { listJobsPublic, listMyApplications } from "@/lib/jobs.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — Learn & Earn" }] }),
