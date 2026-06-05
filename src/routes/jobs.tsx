@@ -224,7 +224,7 @@ function JobCard({ j, onApply, canApply }: { j: any; onApply: () => void; canApp
     <article className="lift glass rounded-xl p-5 h-full">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <h3 className="font-semibold">{j.job_title}</h3>
+          <Link to="/jobs/$jobId" params={{ jobId: j.id }} className="font-semibold hover:underline">{j.job_title}</Link>
           <p className="text-sm text-muted-foreground">{j.company}</p>
         </div>
         <div className="flex flex-col items-end gap-1">
@@ -245,13 +245,16 @@ function JobCard({ j, onApply, canApply }: { j: any; onApply: () => void; canApp
           <span key={r} className="rounded border bg-white/60 px-2 py-0.5 text-xs">{r}</span>
         ))}
       </div>
-      <div className="mt-4 flex items-center justify-between">
+      <div className="mt-4 flex items-center justify-between gap-2">
         {j.salary_range && <p className="text-sm font-medium" style={{ color: "var(--color-primary)" }}>{j.salary_range}</p>}
-        {canApply ? (
-          <button onClick={onApply} className="ml-auto rounded-md px-3 py-1.5 text-sm font-semibold text-white" style={{ background: "var(--color-primary)" }}>Apply now</button>
-        ) : (
-          <a href="/auth" className="ml-auto rounded-md border px-3 py-1.5 text-sm font-semibold">Sign in to apply</a>
-        )}
+        <div className="ml-auto flex items-center gap-2">
+          <Link to="/jobs/$jobId" params={{ jobId: j.id }} className="rounded-md border px-3 py-1.5 text-sm font-semibold hover:bg-white/60">View details</Link>
+          {canApply ? (
+            <button onClick={onApply} className="rounded-md px-3 py-1.5 text-sm font-semibold text-white" style={{ background: "var(--color-primary)" }}>Apply</button>
+          ) : (
+            <a href="/auth" className="rounded-md px-3 py-1.5 text-sm font-semibold text-white" style={{ background: "var(--color-primary)" }}>Sign in</a>
+          )}
+        </div>
       </div>
     </article>
   );
