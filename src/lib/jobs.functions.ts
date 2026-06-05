@@ -14,6 +14,32 @@ export const listJobsPublic = createServerFn({ method: "GET" }).handler(async ()
   return data ?? [];
 });
 
+export const getJobPublic = createServerFn({ method: "GET" })
+  .inputValidator((i: unknown) => z.object({ id: z.string().uuid() }).parse(i))
+  .handler(async ({ data }) => {
+    const { data: job, error } = await publicClient
+      .from("job_marketplace")
+      .select("*")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return job;
+  });
+
+export const getMyApplicationForJob = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => z.object({ jobId: z.string().uuid() }).parse(i))
+  .handler(async ({ data, context }) => {
+    const { data: app, error } = await context.supabase
+      .from("job_applications")
+      .select("id, status, created_at, cover_note")
+      .eq("job_id", data.jobId)
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return app;
+  });
+
 export const listCompaniesPublic = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await publicClient.from("companies").select("*").order("name");
   if (error) throw new Error(error.message);

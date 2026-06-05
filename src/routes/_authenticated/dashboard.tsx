@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyProfile } from "@/lib/profile.functions";
 import { listMyCredentials } from "@/lib/assessments.functions";
-import { listJobsPublic } from "@/lib/jobs.functions";
+import { listJobsPublic, listMyApplications } from "@/lib/jobs.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — Learn & Earn" }] }),
@@ -14,9 +14,11 @@ function Dashboard() {
   const profileFn = useServerFn(getMyProfile);
   const credsFn = useServerFn(listMyCredentials);
   const jobsFn = useServerFn(listJobsPublic);
+  const appsFn = useServerFn(listMyApplications);
   const profile = useQuery({ queryKey: ["me"], queryFn: () => profileFn() });
   const creds = useQuery({ queryKey: ["my-creds"], queryFn: () => credsFn() });
   const jobs = useQuery({ queryKey: ["jobs"], queryFn: () => jobsFn() });
+  const apps = useQuery({ queryKey: ["my-apps"], queryFn: () => appsFn() });
 
   const p = profile.data?.profile;
   const isAdmin = profile.data?.isAdmin;
@@ -29,9 +31,10 @@ function Dashboard() {
             <p className="text-sm text-white/80">Welcome back</p>
             <h1 className="mt-1 text-3xl font-bold text-white">{p?.name ?? "Engineer"}</h1>
             <p className="mt-1 text-sm text-white/80">{p?.discipline ? `Discipline: ${p.discipline}` : "Set your discipline in CV Builder"}</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            <div className="mt-4 grid gap-3 sm:grid-cols-4">
               <Metric label="Credentials" value={creds.data?.length ?? 0} />
               <Metric label="Skills" value={p?.skills?.length ?? 0} />
+              <Metric label="Applications" value={apps.data?.length ?? 0} />
               <Metric label="Live jobs" value={jobs.data?.length ?? 0} />
             </div>
           </div>
@@ -63,11 +66,30 @@ function Dashboard() {
               <p className="text-sm text-muted-foreground">No credentials yet. <Link to="/assessments" className="underline">Take an assessment</Link>.</p>
             )}
           </Card>
+          <Card title="My applications">
+            {(apps.data?.length ?? 0) > 0 ? (
+              <>
+                <ul className="space-y-2 text-sm">
+                  {apps.data!.slice(0, 5).map((a: any) => (
+                    <li key={a.id} className="flex items-center justify-between gap-2 border-b pb-2 last:border-0">
+                      <Link to="/jobs/$jobId" params={{ jobId: a.job?.id ?? "" }} className="truncate hover:underline">
+                        {a.job?.job_title ?? "Job removed"} <span className="text-muted-foreground">— {a.job?.company}</span>
+                      </Link>
+                      <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${appColor(a.status)}`}>{a.status}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link to="/my-applications" className="mt-3 inline-block text-sm" style={{ color: "var(--color-primary)" }}>Track all →</Link>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">No applications yet. <Link to="/jobs" className="underline">Find a job</Link>.</p>
+            )}
+          </Card>
           <Card title="Latest jobs">
             <ul className="space-y-2 text-sm">
               {(jobs.data ?? []).slice(0, 5).map((j: any) => (
                 <li key={j.id} className="flex items-center justify-between border-b pb-2 last:border-0">
-                  <span>{j.job_title} — <span className="text-muted-foreground">{j.company}</span></span>
+                  <Link to="/jobs/$jobId" params={{ jobId: j.id }} className="truncate hover:underline">{j.job_title} — <span className="text-muted-foreground">{j.company}</span></Link>
                   {j.is_remote ? <span className="rounded bg-muted px-2 py-0.5 text-xs">Remote</span> : null}
                 </li>
               ))}
@@ -113,4 +135,10 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
       <div className="mt-3">{children}</div>
     </div>
   );
+}
+function appColor(s: string) {
+  if (s === "accepted") return "bg-emerald-100 text-emerald-700";
+  if (s === "rejected") return "bg-red-100 text-red-700";
+  if (s === "reviewing") return "bg-amber-100 text-amber-700";
+  return "bg-slate-100 text-slate-700";
 }
