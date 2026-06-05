@@ -14,9 +14,11 @@ function Dashboard() {
   const profileFn = useServerFn(getMyProfile);
   const credsFn = useServerFn(listMyCredentials);
   const jobsFn = useServerFn(listJobsPublic);
+  const appsFn = useServerFn(listMyApplications);
   const profile = useQuery({ queryKey: ["me"], queryFn: () => profileFn() });
   const creds = useQuery({ queryKey: ["my-creds"], queryFn: () => credsFn() });
   const jobs = useQuery({ queryKey: ["jobs"], queryFn: () => jobsFn() });
+  const apps = useQuery({ queryKey: ["my-apps"], queryFn: () => appsFn() });
 
   const p = profile.data?.profile;
   const isAdmin = profile.data?.isAdmin;
