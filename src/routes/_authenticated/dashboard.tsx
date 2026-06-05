@@ -31,9 +31,10 @@ function Dashboard() {
             <p className="text-sm text-white/80">Welcome back</p>
             <h1 className="mt-1 text-3xl font-bold text-white">{p?.name ?? "Engineer"}</h1>
             <p className="mt-1 text-sm text-white/80">{p?.discipline ? `Discipline: ${p.discipline}` : "Set your discipline in CV Builder"}</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            <div className="mt-4 grid gap-3 sm:grid-cols-4">
               <Metric label="Credentials" value={creds.data?.length ?? 0} />
               <Metric label="Skills" value={p?.skills?.length ?? 0} />
+              <Metric label="Applications" value={apps.data?.length ?? 0} />
               <Metric label="Live jobs" value={jobs.data?.length ?? 0} />
             </div>
           </div>
