@@ -18,6 +18,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as JobsJobIdRouteImport } from './routes/jobs.$jobId'
+import { Route as CompaniesSlugRouteImport } from './routes/companies.$slug'
 import { Route as AuthenticatedMyApplicationsRouteImport } from './routes/_authenticated/my-applications'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCvParserRouteImport } from './routes/_authenticated/cv-parser'
@@ -75,6 +76,11 @@ const JobsJobIdRoute = JobsJobIdRouteImport.update({
   id: '/$jobId',
   path: '/$jobId',
   getParentRoute: () => JobsRoute,
+} as any)
+const CompaniesSlugRoute = CompaniesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CompaniesRoute,
 } as any)
 const AuthenticatedMyApplicationsRoute =
   AuthenticatedMyApplicationsRouteImport.update({
@@ -152,7 +158,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/career-advice': typeof CareerAdviceRoute
-  '/companies': typeof CompaniesRoute
+  '/companies': typeof CompaniesRouteWithChildren
   '/interview-prep': typeof InterviewPrepRoute
   '/jobs': typeof JobsRouteWithChildren
   '/salaries': typeof SalariesRoute
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/cv-parser': typeof AuthenticatedCvParserRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
+  '/companies/$slug': typeof CompaniesSlugRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
@@ -175,7 +182,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/career-advice': typeof CareerAdviceRoute
-  '/companies': typeof CompaniesRoute
+  '/companies': typeof CompaniesRouteWithChildren
   '/interview-prep': typeof InterviewPrepRoute
   '/jobs': typeof JobsRouteWithChildren
   '/salaries': typeof SalariesRoute
@@ -185,6 +192,7 @@ export interface FileRoutesByTo {
   '/cv-parser': typeof AuthenticatedCvParserRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
+  '/companies/$slug': typeof CompaniesSlugRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
@@ -200,7 +208,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/career-advice': typeof CareerAdviceRoute
-  '/companies': typeof CompaniesRoute
+  '/companies': typeof CompaniesRouteWithChildren
   '/interview-prep': typeof InterviewPrepRoute
   '/jobs': typeof JobsRouteWithChildren
   '/salaries': typeof SalariesRoute
@@ -210,6 +218,7 @@ export interface FileRoutesById {
   '/_authenticated/cv-parser': typeof AuthenticatedCvParserRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/my-applications': typeof AuthenticatedMyApplicationsRoute
+  '/companies/$slug': typeof CompaniesSlugRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/_authenticated/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
@@ -235,6 +244,7 @@ export interface FileRouteTypes {
     | '/cv-parser'
     | '/dashboard'
     | '/my-applications'
+    | '/companies/$slug'
     | '/jobs/$jobId'
     | '/admin/companies'
     | '/admin/dashboard'
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/cv-parser'
     | '/dashboard'
     | '/my-applications'
+    | '/companies/$slug'
     | '/jobs/$jobId'
     | '/admin/companies'
     | '/admin/dashboard'
@@ -282,6 +293,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cv-parser'
     | '/_authenticated/dashboard'
     | '/_authenticated/my-applications'
+    | '/companies/$slug'
     | '/jobs/$jobId'
     | '/_authenticated/admin/companies'
     | '/_authenticated/admin/dashboard'
@@ -297,7 +309,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CareerAdviceRoute: typeof CareerAdviceRoute
-  CompaniesRoute: typeof CompaniesRoute
+  CompaniesRoute: typeof CompaniesRouteWithChildren
   InterviewPrepRoute: typeof InterviewPrepRoute
   JobsRoute: typeof JobsRouteWithChildren
   SalariesRoute: typeof SalariesRoute
@@ -367,6 +379,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/jobs/$jobId'
       preLoaderRoute: typeof JobsJobIdRouteImport
       parentRoute: typeof JobsRoute
+    }
+    '/companies/$slug': {
+      id: '/companies/$slug'
+      path: '/$slug'
+      fullPath: '/companies/$slug'
+      preLoaderRoute: typeof CompaniesSlugRouteImport
+      parentRoute: typeof CompaniesRoute
     }
     '/_authenticated/my-applications': {
       id: '/_authenticated/my-applications'
@@ -510,6 +529,18 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface CompaniesRouteChildren {
+  CompaniesSlugRoute: typeof CompaniesSlugRoute
+}
+
+const CompaniesRouteChildren: CompaniesRouteChildren = {
+  CompaniesSlugRoute: CompaniesSlugRoute,
+}
+
+const CompaniesRouteWithChildren = CompaniesRoute._addFileChildren(
+  CompaniesRouteChildren,
+)
+
 interface JobsRouteChildren {
   JobsJobIdRoute: typeof JobsJobIdRoute
 }
@@ -525,7 +556,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CareerAdviceRoute: CareerAdviceRoute,
-  CompaniesRoute: CompaniesRoute,
+  CompaniesRoute: CompaniesRouteWithChildren,
   InterviewPrepRoute: InterviewPrepRoute,
   JobsRoute: JobsRouteWithChildren,
   SalariesRoute: SalariesRoute,
