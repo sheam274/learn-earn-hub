@@ -31,7 +31,8 @@ function Landing() {
     <div className="page-enter">
       {/* Premium Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:py-24 md:grid-cols-2 md:px-6">
+        <CseHeroScene />
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-4 py-16 md:py-24 md:grid-cols-2 md:px-6">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-semibold">
               <Sparkles className="size-3.5" style={{ color: "var(--color-primary)" }} />
