@@ -31,7 +31,8 @@ function Landing() {
     <div className="page-enter">
       {/* Premium Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:py-24 md:grid-cols-2 md:px-6">
+        <CseHeroScene />
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-4 py-16 md:py-24 md:grid-cols-2 md:px-6">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-semibold">
               <Sparkles className="size-3.5" style={{ color: "var(--color-primary)" }} />
@@ -174,3 +175,38 @@ function Landing() {
     </div>
   );
 }
+
+function CseHeroScene() {
+  const chips = [
+    { t: "const job = await apply()", cls: "", x: "4%", y: "12%", d: "0s" },
+    { t: "git commit -m 'shipped 🚀'", cls: "commit", x: "62%", y: "8%", d: "2s" },
+    { t: "💼 Senior Frontend · Dhaka", cls: "briefcase", x: "70%", y: "70%", d: "4s" },
+    { t: "<Resume ats-ready />", cls: "", x: "10%", y: "62%", d: "6s" },
+    { t: "npm run build ✓", cls: "commit", x: "48%", y: "40%", d: "1s" },
+    { t: "💼 Remote · USD 80k", cls: "briefcase", x: "30%", y: "80%", d: "3s" },
+    { t: "function getHired() {}", cls: "", x: "82%", y: "32%", d: "5s" },
+  ];
+  return (
+    <div className="cse-scene" aria-hidden="true">
+      {chips.map((c, i) => (
+        <span
+          key={i}
+          className={`chip ${c.cls}`}
+          style={{ left: c.x, top: c.y, animationDelay: c.d }}
+        >
+          {c.t}
+        </span>
+      ))}
+      <div className="cse-terminal hidden lg:block">
+        <span className="ln">$ talentbd login --as student</span>
+        <span className="ln">→ welcome, future engineer</span>
+        <span className="ln">$ learn react --track cse</span>
+        <span className="ln">→ progress ████████░░ 80%</span>
+        <span className="ln">$ certify frontend</span>
+        <span className="ln">→ credential issued ✓</span>
+        <span className="ln">$ apply --job "Frontend @ Pathao" <span className="caret" /></span>
+      </div>
+    </div>
+  );
+}
+

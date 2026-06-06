@@ -46,6 +46,25 @@ export const listCompaniesPublic = createServerFn({ method: "GET" }).handler(asy
   return data ?? [];
 });
 
+export const getCompanyBySlug = createServerFn({ method: "GET" })
+  .inputValidator((i: unknown) => z.object({ slug: z.string().min(1).max(120) }).parse(i))
+  .handler(async ({ data }) => {
+    const { data: company, error } = await publicClient
+      .from("companies")
+      .select("*")
+      .eq("slug", data.slug)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!company) return null;
+    const { data: jobs } = await publicClient
+      .from("job_marketplace")
+      .select("*")
+      .eq("is_live", true)
+      .or(`company_id.eq.${company.id},company.eq.${company.name}`)
+      .order("created_at", { ascending: false });
+    return { company, jobs: jobs ?? [] };
+  });
+
 const jobSchema = z.object({
   id: z.string().uuid().optional(),
   job_title: z.string().min(1),
