@@ -188,6 +188,21 @@ function CseHeroScene() {
   ];
   return (
     <div className="cse-scene" aria-hidden="true">
+      <svg className="cse-net" viewBox="0 0 1200 600" preserveAspectRatio="none">
+        <path className="edge" d="M120,120 L320,260 L560,180 L820,300 L1080,200" />
+        <path className="edge" d="M180,460 L380,360 L600,440 L860,360 L1100,460" style={{ animationDelay: "1.5s" }} />
+        <path className="edge" d="M320,260 L380,360" />
+        <path className="edge" d="M560,180 L600,440" style={{ animationDelay: "0.8s" }} />
+        <path className="edge" d="M820,300 L860,360" />
+        <circle className="node" cx="120" cy="120" r="3" />
+        <circle className="node b" cx="320" cy="260" r="3" />
+        <circle className="node" cx="560" cy="180" r="3" />
+        <circle className="node b" cx="820" cy="300" r="3" />
+        <circle className="node" cx="1080" cy="200" r="3" />
+        <circle className="node b" cx="380" cy="360" r="3" />
+        <circle className="node" cx="600" cy="440" r="3" />
+        <circle className="node b" cx="860" cy="360" r="3" />
+      </svg>
       {chips.map((c, i) => (
         <span
           key={i}

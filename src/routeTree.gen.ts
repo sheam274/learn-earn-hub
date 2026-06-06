@@ -78,9 +78,9 @@ const JobsJobIdRoute = JobsJobIdRouteImport.update({
   getParentRoute: () => JobsRoute,
 } as any)
 const CompaniesSlugRoute = CompaniesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => CompaniesRoute,
+  id: '/companies/$slug',
+  path: '/companies/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedMyApplicationsRoute =
   AuthenticatedMyApplicationsRouteImport.update({
@@ -312,6 +312,7 @@ export interface RootRouteChildren {
   InterviewPrepRoute: typeof InterviewPrepRoute
   JobsRoute: typeof JobsRouteWithChildren
   SalariesRoute: typeof SalariesRoute
+  CompaniesSlugRoute: typeof CompaniesSlugRoute
   CompaniesIndexRoute: typeof CompaniesIndexRoute
 }
 
@@ -382,10 +383,10 @@ declare module '@tanstack/react-router' {
     }
     '/companies/$slug': {
       id: '/companies/$slug'
-      path: '/$slug'
+      path: '/companies/$slug'
       fullPath: '/companies/$slug'
       preLoaderRoute: typeof CompaniesSlugRouteImport
-      parentRoute: typeof CompaniesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/my-applications': {
       id: '/_authenticated/my-applications'
@@ -547,18 +548,9 @@ const rootRouteChildren: RootRouteChildren = {
   InterviewPrepRoute: InterviewPrepRoute,
   JobsRoute: JobsRouteWithChildren,
   SalariesRoute: SalariesRoute,
+  CompaniesSlugRoute: CompaniesSlugRoute,
   CompaniesIndexRoute: CompaniesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
