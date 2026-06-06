@@ -42,19 +42,38 @@ function Companies() {
       <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {list.map((c: any, i: number) => (
           <ScrollReveal key={c.id} delay={(i % 6) * 60}>
-            <article className="lift glass rounded-xl p-5 h-full">
+            <Link
+              to="/companies/$slug"
+              params={{ slug: c.slug }}
+              className="lift glass rounded-xl p-5 h-full block group"
+            >
               <div className="flex items-center gap-3">
-                <div className="size-12 rounded-lg flex items-center justify-center text-white font-bold" style={{ background: "var(--color-primary)" }}>
-                  {c.logo_url ? <img src={c.logo_url} alt={c.name} className="size-12 rounded-lg object-cover" /> : c.name.slice(0, 2).toUpperCase()}
+                <div className="size-12 rounded-lg flex items-center justify-center bg-white shadow-sm ring-1 ring-border overflow-hidden">
+                  {c.logo_url ? (
+                    <img src={c.logo_url} alt={c.name} className="size-12 object-contain p-1.5" />
+                  ) : (
+                    <span className="font-bold text-sm" style={{ color: "var(--color-primary)" }}>
+                      {c.name.slice(0, 2).toUpperCase()}
+                    </span>
+                  )}
                 </div>
-                <div>
-                  <h3 className="font-semibold">{c.name}</h3>
-                  <p className="text-xs text-muted-foreground">{c.industry ?? "—"} · {c.location ?? "—"}</p>
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-semibold group-hover:underline truncate">{c.name}</h3>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {[c.industry, c.location].filter(Boolean).join(" · ") || "—"}
+                  </p>
                 </div>
               </div>
-              {c.description && <p className="mt-3 text-sm">{c.description}</p>}
-              {c.website && <a href={c.website} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm font-medium" style={{ color: "var(--color-primary)" }}>Visit website →</a>}
-            </article>
+              {c.description && <p className="mt-3 text-sm line-clamp-3">{c.description}</p>}
+              <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                {c.industry && <span className="inline-flex items-center gap-1"><Building2 className="size-3" />{c.industry}</span>}
+                {c.location && <span className="inline-flex items-center gap-1"><MapPin className="size-3" />{c.location}</span>}
+                {c.website && <span className="inline-flex items-center gap-1"><Globe className="size-3" />{c.website.replace(/^https?:\/\//, "").split("/")[0]}</span>}
+              </div>
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium" style={{ color: "var(--color-primary)" }}>
+                View company & jobs <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </Link>
           </ScrollReveal>
         ))}
         {list.length === 0 && <p className="text-sm text-muted-foreground">No companies match.</p>}
@@ -62,3 +81,4 @@ function Companies() {
     </div>
   );
 }
+
