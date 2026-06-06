@@ -12,11 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SalariesRouteImport } from './routes/salaries'
 import { Route as JobsRouteImport } from './routes/jobs'
 import { Route as InterviewPrepRouteImport } from './routes/interview-prep'
-import { Route as CompaniesRouteImport } from './routes/companies'
 import { Route as CareerAdviceRouteImport } from './routes/career-advice'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CompaniesIndexRouteImport } from './routes/companies.index'
 import { Route as JobsJobIdRouteImport } from './routes/jobs.$jobId'
 import { Route as CompaniesSlugRouteImport } from './routes/companies.$slug'
 import { Route as AuthenticatedMyApplicationsRouteImport } from './routes/_authenticated/my-applications'
@@ -48,11 +48,6 @@ const InterviewPrepRoute = InterviewPrepRouteImport.update({
   path: '/interview-prep',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CompaniesRoute = CompaniesRouteImport.update({
-  id: '/companies',
-  path: '/companies',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CareerAdviceRoute = CareerAdviceRouteImport.update({
   id: '/career-advice',
   path: '/career-advice',
@@ -72,15 +67,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CompaniesIndexRoute = CompaniesIndexRouteImport.update({
+  id: '/companies/',
+  path: '/companies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JobsJobIdRoute = JobsJobIdRouteImport.update({
   id: '/$jobId',
   path: '/$jobId',
   getParentRoute: () => JobsRoute,
 } as any)
 const CompaniesSlugRoute = CompaniesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => CompaniesRoute,
+  id: '/companies/$slug',
+  path: '/companies/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedMyApplicationsRoute =
   AuthenticatedMyApplicationsRouteImport.update({
@@ -158,7 +158,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/career-advice': typeof CareerAdviceRoute
-  '/companies': typeof CompaniesRouteWithChildren
   '/interview-prep': typeof InterviewPrepRoute
   '/jobs': typeof JobsRouteWithChildren
   '/salaries': typeof SalariesRoute
@@ -170,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/companies/$slug': typeof CompaniesSlugRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
+  '/companies/': typeof CompaniesIndexRoute
   '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
@@ -182,7 +182,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/career-advice': typeof CareerAdviceRoute
-  '/companies': typeof CompaniesRouteWithChildren
   '/interview-prep': typeof InterviewPrepRoute
   '/jobs': typeof JobsRouteWithChildren
   '/salaries': typeof SalariesRoute
@@ -194,6 +193,7 @@ export interface FileRoutesByTo {
   '/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/companies/$slug': typeof CompaniesSlugRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
+  '/companies': typeof CompaniesIndexRoute
   '/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
@@ -208,7 +208,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/career-advice': typeof CareerAdviceRoute
-  '/companies': typeof CompaniesRouteWithChildren
   '/interview-prep': typeof InterviewPrepRoute
   '/jobs': typeof JobsRouteWithChildren
   '/salaries': typeof SalariesRoute
@@ -220,6 +219,7 @@ export interface FileRoutesById {
   '/_authenticated/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/companies/$slug': typeof CompaniesSlugRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
+  '/companies/': typeof CompaniesIndexRoute
   '/_authenticated/admin/companies': typeof AuthenticatedAdminCompaniesRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRoute
@@ -234,7 +234,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/career-advice'
-    | '/companies'
     | '/interview-prep'
     | '/jobs'
     | '/salaries'
@@ -246,6 +245,7 @@ export interface FileRouteTypes {
     | '/my-applications'
     | '/companies/$slug'
     | '/jobs/$jobId'
+    | '/companies/'
     | '/admin/companies'
     | '/admin/dashboard'
     | '/admin/jobs'
@@ -258,7 +258,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/career-advice'
-    | '/companies'
     | '/interview-prep'
     | '/jobs'
     | '/salaries'
@@ -270,6 +269,7 @@ export interface FileRouteTypes {
     | '/my-applications'
     | '/companies/$slug'
     | '/jobs/$jobId'
+    | '/companies'
     | '/admin/companies'
     | '/admin/dashboard'
     | '/admin/jobs'
@@ -283,7 +283,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/career-advice'
-    | '/companies'
     | '/interview-prep'
     | '/jobs'
     | '/salaries'
@@ -295,6 +294,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-applications'
     | '/companies/$slug'
     | '/jobs/$jobId'
+    | '/companies/'
     | '/_authenticated/admin/companies'
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/jobs'
@@ -309,10 +309,11 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CareerAdviceRoute: typeof CareerAdviceRoute
-  CompaniesRoute: typeof CompaniesRouteWithChildren
   InterviewPrepRoute: typeof InterviewPrepRoute
   JobsRoute: typeof JobsRouteWithChildren
   SalariesRoute: typeof SalariesRoute
+  CompaniesSlugRoute: typeof CompaniesSlugRoute
+  CompaniesIndexRoute: typeof CompaniesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -336,13 +337,6 @@ declare module '@tanstack/react-router' {
       path: '/interview-prep'
       fullPath: '/interview-prep'
       preLoaderRoute: typeof InterviewPrepRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/companies': {
-      id: '/companies'
-      path: '/companies'
-      fullPath: '/companies'
-      preLoaderRoute: typeof CompaniesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/career-advice': {
@@ -373,6 +367,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/companies/': {
+      id: '/companies/'
+      path: '/companies'
+      fullPath: '/companies/'
+      preLoaderRoute: typeof CompaniesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/jobs/$jobId': {
       id: '/jobs/$jobId'
       path: '/$jobId'
@@ -382,10 +383,10 @@ declare module '@tanstack/react-router' {
     }
     '/companies/$slug': {
       id: '/companies/$slug'
-      path: '/$slug'
+      path: '/companies/$slug'
       fullPath: '/companies/$slug'
       preLoaderRoute: typeof CompaniesSlugRouteImport
-      parentRoute: typeof CompaniesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/my-applications': {
       id: '/_authenticated/my-applications'
@@ -529,18 +530,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface CompaniesRouteChildren {
-  CompaniesSlugRoute: typeof CompaniesSlugRoute
-}
-
-const CompaniesRouteChildren: CompaniesRouteChildren = {
-  CompaniesSlugRoute: CompaniesSlugRoute,
-}
-
-const CompaniesRouteWithChildren = CompaniesRoute._addFileChildren(
-  CompaniesRouteChildren,
-)
-
 interface JobsRouteChildren {
   JobsJobIdRoute: typeof JobsJobIdRoute
 }
@@ -556,10 +545,11 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CareerAdviceRoute: CareerAdviceRoute,
-  CompaniesRoute: CompaniesRouteWithChildren,
   InterviewPrepRoute: InterviewPrepRoute,
   JobsRoute: JobsRouteWithChildren,
   SalariesRoute: SalariesRoute,
+  CompaniesSlugRoute: CompaniesSlugRoute,
+  CompaniesIndexRoute: CompaniesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
