@@ -6,7 +6,7 @@ import { listCompaniesPublic } from "@/lib/jobs.functions";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { Globe, MapPin, Building2, ArrowRight } from "lucide-react";
 
-export const Route = createFileRoute("/companies")({
+export const Route = createFileRoute("/companies/")({
   head: () => ({
     meta: [
       { title: "Companies — TalentBD" },
