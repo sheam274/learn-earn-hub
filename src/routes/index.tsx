@@ -194,16 +194,44 @@ function CseHeroScene() {
           {c.t}
         </span>
       ))}
-      <div className="cse-terminal hidden lg:block">
-        <span className="ln">$ talentbd login --as student</span>
-        <span className="ln">→ welcome, future engineer</span>
-        <span className="ln">$ learn react --track cse</span>
-        <span className="ln">→ progress ████████░░ 80%</span>
-        <span className="ln">$ certify frontend</span>
-        <span className="ln">→ credential issued ✓</span>
-        <span className="ln">$ apply --job "Frontend @ Pathao" <span className="caret" /></span>
-      </div>
     </div>
   );
 }
+
+function MacbookHero() {
+  return (
+    <div className="macbook" aria-label="Code preview running inside a MacBook Pro">
+      <div className="macbook-lid">
+        <div className="macbook-screen">
+          <div className="macbook-bezel">
+            <span className="macbook-notch" />
+          </div>
+          <div className="macbook-display">
+            <div className="mac-window">
+              <div className="mac-traffic">
+                <span /><span /><span />
+                <span className="mac-title">talentbd ~ /career</span>
+              </div>
+              <div className="mac-code">
+                <span className="ln"><em>$</em> talentbd login <i>--as student</i></span>
+                <span className="ln out">→ welcome, future engineer</span>
+                <span className="ln"><em>$</em> learn react <i>--track cse</i></span>
+                <span className="ln out">→ progress ████████░░ 80%</span>
+                <span className="ln"><em>$</em> certify frontend</span>
+                <span className="ln ok">→ credential issued ✓</span>
+                <span className="ln"><em>$</em> apply <i>--job</i> <b>"Frontend @ Pathao"</b><span className="caret" /></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="macbook-base">
+        <div className="macbook-keyboard" />
+        <div className="macbook-trackpad" />
+      </div>
+      <div className="macbook-shadow" />
+    </div>
+  );
+}
+
 
