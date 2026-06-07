@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { BrandMark } from "@/components/Brand";
-import { Sparkles, GraduationCap, Briefcase, Award, ArrowRight } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
