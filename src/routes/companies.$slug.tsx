@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getCompanyBySlug } from "@/lib/jobs.functions";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { CompanyLogo } from "@/components/CompanyLogo";
 import { Globe, MapPin, Briefcase, Building2, ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/companies/$slug")({
@@ -39,15 +40,7 @@ function CompanyDetail() {
 
       <ScrollReveal>
         <header className="mt-4 glass rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6">
-          <div className="size-24 rounded-2xl bg-white grid place-items-center overflow-hidden shadow-sm ring-1 ring-border">
-            {company.logo_url ? (
-              <img src={company.logo_url} alt={company.name} className="size-24 object-contain p-2" />
-            ) : (
-              <span className="text-3xl font-bold" style={{ color: "var(--color-primary)" }}>
-                {company.name.slice(0, 2).toUpperCase()}
-              </span>
-            )}
-          </div>
+          <CompanyLogo name={company.name} url={company.logo_url} size={96} className="!rounded-2xl" />
           <div className="min-w-0 flex-1">
             <h1 className="text-3xl font-bold">{company.name}</h1>
             <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">

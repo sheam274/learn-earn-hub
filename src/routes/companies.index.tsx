@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { listCompaniesPublic } from "@/lib/jobs.functions";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { CompanyLogo } from "@/components/CompanyLogo";
 import { Globe, MapPin, Building2, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/companies/")({
@@ -48,15 +49,7 @@ function Companies() {
               className="lift glass rounded-xl p-5 h-full block group"
             >
               <div className="flex items-center gap-3">
-                <div className="size-12 rounded-lg flex items-center justify-center bg-white shadow-sm ring-1 ring-border overflow-hidden">
-                  {c.logo_url ? (
-                    <img src={c.logo_url} alt={c.name} className="size-12 object-contain p-1.5" />
-                  ) : (
-                    <span className="font-bold text-sm" style={{ color: "var(--color-primary)" }}>
-                      {c.name.slice(0, 2).toUpperCase()}
-                    </span>
-                  )}
-                </div>
+                <CompanyLogo name={c.name} url={c.logo_url} size={48} />
                 <div className="min-w-0 flex-1">
                   <h3 className="font-semibold group-hover:underline truncate">{c.name}</h3>
                   <p className="text-xs text-muted-foreground truncate">
