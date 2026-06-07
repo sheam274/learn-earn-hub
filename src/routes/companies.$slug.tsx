@@ -40,7 +40,7 @@ function CompanyDetail() {
 
       <ScrollReveal>
         <header className="mt-4 glass rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6">
-          <CompanyLogo name={company.name} url={company.logo_url} size={96} className="!rounded-2xl" />
+          <CompanyLogo name={company.name} url={company.logo_url} website={company.website} size={96} className="!rounded-2xl" />
           <div className="min-w-0 flex-1">
             <h1 className="text-3xl font-bold">{company.name}</h1>
             <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
