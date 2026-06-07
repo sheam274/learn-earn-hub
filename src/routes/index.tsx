@@ -69,30 +69,12 @@ function Landing() {
             </div>
           </div>
 
-          {/* Logo showcase + feature card */}
+          {/* MacBook with code on screen */}
           <ScrollReveal>
             <div className="relative">
-              <div className="absolute -inset-4 rounded-3xl opacity-50 blur-3xl"
+              <div className="absolute -inset-8 rounded-[40px] opacity-50 blur-3xl"
                 style={{ background: "linear-gradient(135deg, var(--color-primary), var(--color-accent))" }} />
-              <div className="relative glass-dark rounded-3xl p-6 md:p-8">
-                <div className="float-slow mx-auto mb-4 flex size-32 items-center justify-center rounded-2xl bg-white/95 p-3 shadow-2xl ring-pulse relative">
-                  <BrandMark size={104} />
-                </div>
-                <h3 className="text-center text-lg font-bold">What you get inside</h3>
-                <ul className="mt-4 grid gap-2.5 text-sm">
-                  {[
-                    { icon: GraduationCap, t: "Courses across CSE, EEE, Civil" },
-                    { icon: Award, t: "Pass 80% → certified credential" },
-                    { icon: Sparkles, t: "Standard + Premium CV builder" },
-                    { icon: Briefcase, t: "Local BD + global remote jobs" },
-                  ].map(({ icon: Icon, t }) => (
-                    <li key={t} className="flex items-center gap-3 rounded-lg bg-white/10 px-3 py-2">
-                      <Icon className="size-4" style={{ color: "var(--color-accent)" }} />
-                      <span>{t}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <MacbookHero />
             </div>
           </ScrollReveal>
         </div>
