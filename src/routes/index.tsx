@@ -70,7 +70,7 @@ function Landing() {
         </div>
 
         {/* MacBook anchored bottom-right of hero */}
-        <div className="pointer-events-none absolute right-2 bottom-4 z-20 hidden md:block w-[360px] lg:w-[420px] xl:w-[460px]">
+        <div className="pointer-events-none absolute right-4 bottom-6 z-20 hidden md:block w-[280px] lg:w-[320px] xl:w-[360px]">
           <div className="relative macbook-tilt">
             <div className="absolute -inset-10 rounded-[40px] opacity-40 blur-3xl"
               style={{ background: "linear-gradient(135deg, var(--color-primary), var(--color-accent))" }} />
