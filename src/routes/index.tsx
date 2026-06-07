@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { BrandMark } from "@/components/Brand";
-import { Sparkles, GraduationCap, Briefcase, Award, ArrowRight } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -69,30 +68,12 @@ function Landing() {
             </div>
           </div>
 
-          {/* Logo showcase + feature card */}
+          {/* MacBook with code on screen */}
           <ScrollReveal>
             <div className="relative">
-              <div className="absolute -inset-4 rounded-3xl opacity-50 blur-3xl"
+              <div className="absolute -inset-8 rounded-[40px] opacity-50 blur-3xl"
                 style={{ background: "linear-gradient(135deg, var(--color-primary), var(--color-accent))" }} />
-              <div className="relative glass-dark rounded-3xl p-6 md:p-8">
-                <div className="float-slow mx-auto mb-4 flex size-32 items-center justify-center rounded-2xl bg-white/95 p-3 shadow-2xl ring-pulse relative">
-                  <BrandMark size={104} />
-                </div>
-                <h3 className="text-center text-lg font-bold">What you get inside</h3>
-                <ul className="mt-4 grid gap-2.5 text-sm">
-                  {[
-                    { icon: GraduationCap, t: "Courses across CSE, EEE, Civil" },
-                    { icon: Award, t: "Pass 80% → certified credential" },
-                    { icon: Sparkles, t: "Standard + Premium CV builder" },
-                    { icon: Briefcase, t: "Local BD + global remote jobs" },
-                  ].map(({ icon: Icon, t }) => (
-                    <li key={t} className="flex items-center gap-3 rounded-lg bg-white/10 px-3 py-2">
-                      <Icon className="size-4" style={{ color: "var(--color-accent)" }} />
-                      <span>{t}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <MacbookHero />
             </div>
           </ScrollReveal>
         </div>
@@ -212,16 +193,44 @@ function CseHeroScene() {
           {c.t}
         </span>
       ))}
-      <div className="cse-terminal hidden lg:block">
-        <span className="ln">$ talentbd login --as student</span>
-        <span className="ln">→ welcome, future engineer</span>
-        <span className="ln">$ learn react --track cse</span>
-        <span className="ln">→ progress ████████░░ 80%</span>
-        <span className="ln">$ certify frontend</span>
-        <span className="ln">→ credential issued ✓</span>
-        <span className="ln">$ apply --job "Frontend @ Pathao" <span className="caret" /></span>
-      </div>
     </div>
   );
 }
+
+function MacbookHero() {
+  return (
+    <div className="macbook" aria-label="Code preview running inside a MacBook Pro">
+      <div className="macbook-lid">
+        <div className="macbook-screen">
+          <div className="macbook-bezel">
+            <span className="macbook-notch" />
+          </div>
+          <div className="macbook-display">
+            <div className="mac-window">
+              <div className="mac-traffic">
+                <span /><span /><span />
+                <span className="mac-title">talentbd ~ /career</span>
+              </div>
+              <div className="mac-code">
+                <span className="ln"><em>$</em> talentbd login <i>--as student</i></span>
+                <span className="ln out">→ welcome, future engineer</span>
+                <span className="ln"><em>$</em> learn react <i>--track cse</i></span>
+                <span className="ln out">→ progress ████████░░ 80%</span>
+                <span className="ln"><em>$</em> certify frontend</span>
+                <span className="ln ok">→ credential issued ✓</span>
+                <span className="ln"><em>$</em> apply <i>--job</i> <b>"Frontend @ Pathao"</b><span className="caret" /></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="macbook-base">
+        <div className="macbook-keyboard" />
+        <div className="macbook-trackpad" />
+      </div>
+      <div className="macbook-shadow" />
+    </div>
+  );
+}
+
 
