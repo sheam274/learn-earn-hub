@@ -29,10 +29,10 @@ function Landing() {
   return (
     <div className="page-enter">
       {/* Premium Hero */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden min-h-[640px]">
         <CseHeroScene />
-        <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-4 py-16 md:py-24 md:grid-cols-2 md:px-6">
-          <div>
+        <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 md:py-24 md:px-6">
+          <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-semibold">
               <Sparkles className="size-3.5" style={{ color: "var(--color-primary)" }} />
               <span className="text-gradient">Premium · Bangladesh's #1 learn-and-earn</span>
